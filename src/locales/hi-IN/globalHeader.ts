@@ -1,0 +1,17 @@
+export default {
+  'component.globalHeader.search': 'खोज',
+  'component.globalHeader.search.example1': 'खोज उदाहरण 1',
+  'component.globalHeader.search.example2': 'खोज उदाहरण 2',
+  'component.globalHeader.search.example3': 'खोज उदाहरण 3',
+  'component.globalHeader.help': 'मदद',
+  'component.globalHeader.notification': 'अधिसूचना',
+  'component.globalHeader.notification.empty': 'आपने सभी अधिसूचनाएं देखी हैं।',
+  'component.globalHeader.message': 'संदेश',
+  'component.globalHeader.message.empty': 'आपने सभी संदेशों को देखा है।',
+  'component.globalHeader.event': 'घटना',
+  'component.globalHeader.event.empty': 'आपने सभी घटनाओं को देखा है।',
+  'component.noticeIcon.clear': 'स्पष्ट',
+  'component.noticeIcon.cleared': 'साफ़ किया गया',
+  'component.noticeIcon.empty': 'कोई सूचनाएं नहीं',
+  'component.noticeIcon.view-more': 'और देखें',
+};
