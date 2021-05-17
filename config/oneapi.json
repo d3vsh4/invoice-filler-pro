@@ -52,7 +52,7 @@
           {
             "name": "phone",
             "in": "query",
-            "description": "手机号",
+            "description": "phone number",
             "schema": {
               "type": "string"
             }

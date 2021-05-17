@@ -13,7 +13,7 @@ const Settings: LayoutSettings & {
   fixSiderbar: true,
   colorWeak: false,
   title: 'Invoice Filler Pro',
-  pwa: false,
+  pwa: true,
   logo: 'https://svgur.com/i/XKG.svg',
   iconfontUrl: '',
 };

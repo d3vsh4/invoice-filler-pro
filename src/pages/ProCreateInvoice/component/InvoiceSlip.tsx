@@ -24,7 +24,7 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
         </Descriptions.Item>
 
         <Descriptions.Item span={3} label={<Text strong>BILL TO</Text>}>
-          <Text strong>{data.bf_name}</Text>
+          <Text strong>{data.bt_name}</Text>
           <br />
           <Text>{`${data.bt_street}, ${data.bt_city}, ${data.bt_state} - ${data.bt_zip}`}</Text>
           <br />

@@ -20,11 +20,12 @@ export const initialStateConfig = {
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
-export async function getInitialState(): Promise<{
+type InitialStateType = {
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
-}> {
+};
+export async function getInitialState(): Promise<InitialStateType> {
   const fetchUserInfo = async () => {
     try {
       const currentUser = await queryCurrentUser();

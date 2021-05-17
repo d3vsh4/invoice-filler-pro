@@ -66,7 +66,8 @@ const GlobalHeaderRight: React.FC = () => {
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
         </span>
       )}
-      {/* <SelectLang className={styles.action} /> */}
+      {/* FEATURE: language selector */}
+      <SelectLang className={styles.action} />
     </Space>
   );
 };
