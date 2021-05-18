@@ -6,6 +6,8 @@ import ProForm, {
   ProFormDigit,
   ProFormText,
   ProFormTextArea,
+  ProFormCheckbox,
+  ProFormRadio,
 } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useState } from 'react';
@@ -22,7 +24,7 @@ const waitTime = (time: number = 100) => {
   });
 };
 
-export const CompanyProForm: React.FC<AddressProps> = ({ prefix }) => (
+const CompanyFormSection: React.FC<AddressProps> = ({ prefix }) => (
   <>
     <ProFormGroup>
       <ProFormText
@@ -42,10 +44,10 @@ export const CompanyProForm: React.FC<AddressProps> = ({ prefix }) => (
         readonly={prefix == 'bf' ? true : undefined}
       />
     </ProFormGroup>
-    <AdressProForm prefix={prefix} />
+    <AdressFormSection prefix={prefix} />
   </>
 );
-const AdressProForm: React.FC<AddressProps> = ({ prefix }) => (
+const AdressFormSection: React.FC<AddressProps> = ({ prefix }) => (
   <>
     <ProFormText
       rules={[{ required: true }]}
@@ -79,7 +81,8 @@ const AdressProForm: React.FC<AddressProps> = ({ prefix }) => (
     </ProFormGroup>
   </>
 );
-const RentInfoForm: React.FC<DataProps> = ({ data, form }) => {
+//TODO: change type from any
+const RentInfoFormSection: React.FC<any> = ({ form }) => {
   var isFixed = form.getFieldValue('rent_type') == 'fixed';
   const setTaxableAmount = () => {
     if (!isFixed) {
@@ -162,7 +165,7 @@ const RentInfoForm: React.FC<DataProps> = ({ data, form }) => {
     </>
   );
 };
-const Particulars: React.FC<DataProps> = ({ data }) => {
+const ParticularsFormSection: React.FC<any> = ({ form }) => {
   return (
     <>
       <ProFormText
@@ -189,7 +192,7 @@ const Particulars: React.FC<DataProps> = ({ data }) => {
     </>
   );
 };
-const InvoiceInfo: React.FC<DataProps> = ({ data }) => {
+const InvoiceInfoFormSection: React.FC = () => {
   return (
     <>
       <ProFormGroup>
@@ -220,6 +223,40 @@ const InvoiceInfo: React.FC<DataProps> = ({ data }) => {
           readonly
         />
       </ProFormGroup>
+    </>
+  );
+};
+const SupplyInfoFormSection: React.FC<any> = ({ form }) => {
+  const setSupplyAdress = (prefix: string) => {
+    try {
+      form.setFieldsValue({
+        s_street: form.getFieldValue(prefix + '_street'),
+        s_city: form.getFieldValue(prefix + '_city'),
+        s_state: form.getFieldValue(prefix + '_state'),
+        s_zip: form.getFieldValue(prefix + '_zip'),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <>
+      <ProFormRadio.Group
+        name="s_addr_choice"
+        label="Same Address as:"
+        options={[
+          {
+            label: 'Bill from',
+            value: 'bf',
+          },
+          {
+            label: 'Bill to',
+            value: 'bt',
+          },
+        ]}
+        fieldProps={{ onChange: (e) => setSupplyAdress(e.target.value) }}
+      />
+      <AdressFormSection prefix="s" />
     </>
   );
 };
@@ -287,32 +324,32 @@ export default () => {
         >
           <Card title="Invoice Info">
             <ProFormGroup>
-              <InvoiceInfo data={state} />
+              <InvoiceInfoFormSection />
             </ProFormGroup>
           </Card>
           <Card title="Billing From">
             <ProFormGroup>
-              <CompanyProForm prefix="bf" />
+              <CompanyFormSection prefix="bf" />
             </ProFormGroup>
           </Card>
           <Card title="Billing To">
             <ProFormGroup>
-              <CompanyProForm prefix="bt" />
+              <CompanyFormSection prefix="bt" />
             </ProFormGroup>
           </Card>
           <Card title="Supply Info">
             <ProFormGroup>
-              <AdressProForm prefix="s" />
+              <SupplyInfoFormSection form={form} />
             </ProFormGroup>
           </Card>
           <Card title="Rent Info">
             <ProFormGroup>
-              <RentInfoForm data={state} form={form} />
+              <RentInfoFormSection form={form} />
             </ProFormGroup>
           </Card>
           <Card title="Particulars">
             <ProFormGroup>
-              <Particulars data={state} />
+              <ParticularsFormSection form={form} />
             </ProFormGroup>
           </Card>
         </ProForm>

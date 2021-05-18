@@ -15,11 +15,11 @@ type FormStateTypes = {
   s_city: string;
   s_state: string;
   s_zip: number | string;
-  rent_type: 'variable' | 'fixed' | string ;
-  invoice_no:string;
-    invoice_date:string;
+  rent_type: 'variable' | 'fixed' | string;
+  invoice_no: string;
+  invoice_date: string;
   area: number;
-  unit: 'sq. ft.'| string;
+  unit: 'sq. ft.' | string;
   pan: string;
   sac: number;
   p_head?: string;
@@ -39,7 +39,7 @@ type AddressProps = {
   prefix: string;
 };
 type DataProps = {
-  data: FormStateTypes;
+  data?: FormStateTypes;
   setData?: any;
   form?: FormInstance<FormStateTypes>;
 };
