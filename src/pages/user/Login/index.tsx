@@ -59,7 +59,7 @@ const Login: React.FC = () => {
     setSubmitting(true);
 
     try {
-      // 登录
+      // log in
       const msg = await login({ ...values, type });
 
       if (msg.status === 'ok') {
@@ -168,7 +168,7 @@ const Login: React.FC = () => {
                   rules={[
                     {
                       required: true,
-                      message: '用户名是必填项！',
+                      message: 'User name is required!',
                     },
                   ]}
                 />
@@ -185,7 +185,7 @@ const Login: React.FC = () => {
                   rules={[
                     {
                       required: true,
-                      message: '密码是必填项！',
+                      message: 'Password is required!',
                     },
                   ]}
                 />
@@ -210,11 +210,11 @@ const Login: React.FC = () => {
                   rules={[
                     {
                       required: true,
-                      message: '手机号是必填项！',
+                      message: 'Mobile phone number is required!',
                     },
                     {
                       pattern: /^1\d{10}$/,
-                      message: '不合法的手机号！',
+                      message: 'Unhanective mobile phone number!',
                     },
                   ]}
                 />
@@ -247,7 +247,7 @@ const Login: React.FC = () => {
                   rules={[
                     {
                       required: true,
-                      message: '验证码是必填项！',
+                      message: 'The verification code is required!',
                     },
                   ]}
                   onGetCaptcha={async (phone) => {
@@ -272,14 +272,14 @@ const Login: React.FC = () => {
               }}
             >
               <ProFormCheckbox noStyle name="autoLogin">
-                自动登录
+                automatic log-in
               </ProFormCheckbox>
               <a
                 style={{
                   float: 'right',
                 }}
               >
-                忘记密码 ?
+                Forgot password ?
               </a>
             </div>
           </ProForm>
