@@ -101,7 +101,7 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
         </Descriptions.Item>
 
         <Descriptions.Item span={8} label={<Text strong>TOTAL PAYABLE AMOUNT</Text>}>
-          {data.amount_in_words.toUpperCase}
+          {data.amount_in_words.toUpperCase()}
         </Descriptions.Item>
       </Descriptions>
       {/* <div style={{ height: '150px', width: '800px' }}> */}
