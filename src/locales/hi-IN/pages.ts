@@ -2,7 +2,7 @@ export default {
   'pages.layouts.userLayout.title':
     'Ant Design is the most influential web design specification in Xihu district',
   'pages.login.accountLogin.tab': 'खाता प्रवेश',
-  'pages.login.accountLogin.errorMessage': 'गलत उपयोगकर्ता नाम / पासवर्ड (admin / ant.design)',
+  'pages.login.accountLogin.errorMessage': 'गलत उपयोगकर्ता नाम / पासवर्ड',
   'pages.login.failure': 'लॉगिन विफल। कृपया पुन: प्रयास करें!',
   'pages.login.success': 'सफलतापूर्ण प्रवेश!',
   'pages.login.username.placeholder': 'उपयोगकर्ता नाम: pksharma',

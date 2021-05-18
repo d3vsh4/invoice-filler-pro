@@ -1,40 +1,33 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import ReactToPrint from 'react-to-print';
 
 import { Button } from 'antd';
 
 class PrintComponent extends Component {
-    constructor(props: {} | Readonly<{}>) {
-        super(props)
-    }
-    render() {
-        return (<div>
-            {this.props.children}
-        </div>);
-    }
+  constructor(props: {} | Readonly<{}>) {
+    super(props);
+  }
+  render() {
+    return <div>{this.props.children}</div>;
+  }
 }
 export default class GenPrint extends Component {
-    componentRef: any;
-    constructor(props: {} | Readonly<{}>) {
-        super(props)
-        this.componentRef = React.createRef()
-    }
+  componentRef: any;
+  constructor(props: {} | Readonly<{}>) {
+    super(props);
+    this.componentRef = React.createRef();
+  }
 
-    render() {
-        return (
-            <div>
-                <div style={{ display: "block" }}>
-                    <PrintComponent ref={el => this.componentRef = el} children={this.props.children} />
-                </div>
-                <ReactToPrint
-                    trigger={() => <Button>Print</Button>}
-                    content={() => this.componentRef!}
-                />
-
-            </div>
-        )
-    }
-
+  render() {
+    return (
+      <div>
+        <div style={{ display: 'block' }}>
+          <PrintComponent ref={(el) => (this.componentRef = el)} children={this.props.children} />
+        </div>
+        <ReactToPrint trigger={() => <Button>Print</Button>} content={() => this.componentRef!} />
+      </div>
+    );
+  }
 }
 
 /*export const printHelper = (type, data) => {

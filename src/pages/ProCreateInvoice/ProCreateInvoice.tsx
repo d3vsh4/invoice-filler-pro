@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, message, Row, Space, Typography } from 'antd';
+import { Card, message, Row, Space, Tag, Typography } from 'antd';
 import ProForm, {
   ProFormSelect,
   ProFormGroup,
@@ -11,6 +11,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { useState } from 'react';
 import InvoiceModal from './component/InvoiceModal';
 import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
+import { INITIAL_TEST_FORM_VALUES } from '../../constants/InitialValues';
 
 const { Text } = Typography;
 const waitTime = (time: number = 100) => {
@@ -282,7 +283,7 @@ export default () => {
             //   },
             // },
           }}
-          initialValues={INITIAL_FORM_VALUES}
+          initialValues={INITIAL_TEST_FORM_VALUES}
         >
           <Card title="Invoice Info">
             <ProFormGroup>

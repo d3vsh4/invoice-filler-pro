@@ -56,6 +56,8 @@ export const INITIAL_TEST_FORM_VALUES = {
   rent_type: 'variable',
   area: 0.0,
   unit: 'sq. ft.',
+  invoice_no: '0001',
+  invoice_date: '21/12/21',
   pan: 'AIKPS1729A',
   sac: 997212,
   p_head: 'Renting of immovable property Service',
@@ -69,4 +71,5 @@ export const INITIAL_TEST_FORM_VALUES = {
   taxed_amount: 0.0,
   tax_amount: 0.0,
   isIGST: false,
+  amount_in_words: 'zero',
 };

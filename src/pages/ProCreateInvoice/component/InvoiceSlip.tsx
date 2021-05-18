@@ -95,13 +95,15 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
           ₹ {data.tax_amount}
         </Descriptions.Item>
         <Descriptions.Item span={2} label={<Text strong>TOTAL PAYABLE AMOUNT</Text>}>
-          <Text strong type="success">
+          <Text strong style={{ color: 'darkgreen' }}>
             ₹ {data.taxed_amount}
           </Text>
         </Descriptions.Item>
 
         <Descriptions.Item span={8} label={<Text strong>TOTAL PAYABLE AMOUNT</Text>}>
-          {data.amount_in_words.toUpperCase()}
+          <Text strong style={{ color: 'darkgreen' }}>
+            {data.amount_in_words.toUpperCase()}
+          </Text>
         </Descriptions.Item>
       </Descriptions>
       {/* <div style={{ height: '150px', width: '800px' }}> */}
@@ -109,7 +111,7 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
         <Row justify="space-between">
           <Col></Col>
           <Col>
-            <Text>{`For ${data.bf_name}`}</Text>
+            <Text strong>{`For ${data.bf_name}`}</Text>
           </Col>
         </Row>
 
@@ -120,13 +122,13 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
         <Row justify="space-between">
           <Col>
             <Divider style={{ borderStyle: 'none' }} />
-            <Text>SUBJECT TO GUWAHATI JURISDICTION</Text>
+            <Text strong>SUBJECT TO GUWAHATI JURISDICTION</Text>
             <br />
             <Text>E & O.E</Text>
           </Col>
           <Col>
-            <Divider />
-            <Text>{`Authorized Signatory`}</Text>
+            <Divider style={{ borderTop: '1px solid black' }} />
+            <Text strong>{`Authorized Signatory`}</Text>
           </Col>
         </Row>
       </div>
