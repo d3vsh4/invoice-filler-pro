@@ -1,7 +1,5 @@
 import { Col, Descriptions, Divider, Row, Space, Typography } from 'antd';
 import React from 'react';
-import moment from 'moment';
-import { useState } from 'react';
 const { Text, Title } = Typography;
 
 const InvoiceSlip: React.FC<DataProps> = ({ data }) => {

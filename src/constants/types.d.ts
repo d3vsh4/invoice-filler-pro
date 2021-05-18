@@ -17,7 +17,7 @@ type FormStateTypes = {
   s_zip: number | string;
   rent_type: 'variable' | 'fixed' | string;
   invoice_no: string;
-  invoice_date: string;
+  invoice_date?: string;
   area: number;
   unit: 'sq. ft.' | string;
   pan: string;
@@ -39,7 +39,7 @@ type AddressProps = {
   prefix: string;
 };
 type DataProps = {
-  data?: FormStateTypes;
+  data: FormStateTypes;
   setData?: any;
   form?: FormInstance<FormStateTypes>;
 };

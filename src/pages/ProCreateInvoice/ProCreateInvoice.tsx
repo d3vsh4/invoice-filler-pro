@@ -8,12 +8,14 @@ import ProForm, {
   ProFormTextArea,
   ProFormCheckbox,
   ProFormRadio,
+  ProFormDatePicker,
 } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useState } from 'react';
 import InvoiceModal from './component/InvoiceModal';
 import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
 import { INITIAL_TEST_FORM_VALUES } from '../../constants/InitialValues';
+import moment from 'moment';
 
 const { Text } = Typography;
 const waitTime = (time: number = 100) => {
@@ -193,6 +195,7 @@ const ParticularsFormSection: React.FC<any> = ({ form }) => {
   );
 };
 const InvoiceInfoFormSection: React.FC = () => {
+  const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
   return (
     <>
       <ProFormGroup>
@@ -202,11 +205,13 @@ const InvoiceInfoFormSection: React.FC = () => {
           label="Invoice Number"
           placeholder="enter invoice number here"
         />
-        <ProFormText
+        {/* <DatePicker defaultValue={moment('01/01/2015', dateFormatList[0])} format={dateFormatList} /> */}
+        <ProFormDatePicker
           rules={[{ required: true }]}
           name="invoice_date"
-          label="Date"
-          placeholder="enter date here"
+          label="date"
+          initialValue={moment().toDate()}
+          fieldProps={{ format: dateFormatList[0] }}
         />
         <ProFormText
           rules={[{ required: true }]}
@@ -263,7 +268,7 @@ const SupplyInfoFormSection: React.FC<any> = ({ form }) => {
 export default () => {
   const [form] = ProForm.useForm();
   const [state, setState] = useState<FormStateTypes>({
-    ...INITIAL_FORM_VALUES,
+    ...INITIAL_TEST_FORM_VALUES,
   });
   const checkForm = async () =>
     await form
