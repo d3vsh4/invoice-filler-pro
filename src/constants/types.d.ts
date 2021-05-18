@@ -32,7 +32,8 @@ type FormStateTypes = {
   isFormValid: boolean;
   taxed_amount: number;
   tax_amount: number;
-  isIGST: boolean
+  isIGST: boolean;
+  amount_in_words: string;
 };
 type AddressProps = {
   prefix: string;

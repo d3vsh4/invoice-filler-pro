@@ -23,16 +23,13 @@ export async function outLogin(options?: { [key: string]: any }) {
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
   return request<API.LoginResult>(`${BASE_URL}/api/login/account`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    // headers: {
+    //   'Content-Type': 'application/json',
+    // },
     data: body,
     ...(options || {}),
   });
 }
-
-
-
 
 /**Delete rule DELETE /api/rule */
 export async function removeRule(options?: { [key: string]: any }) {
