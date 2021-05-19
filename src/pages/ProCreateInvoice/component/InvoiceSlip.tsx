@@ -1,8 +1,10 @@
 import { Col, Descriptions, Divider, Row, Space, Typography } from 'antd';
 import React from 'react';
 const { Text, Title } = Typography;
-
-const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
+type InvoiceSlipInputType = {
+  data: FormStateTypes;
+};
+const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
   return (
     <div style={{ minWidth: '872px' }}>
       <Descriptions
@@ -50,11 +52,17 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
           <br />
           <br />
           <Text>{`${data.p_content}`}</Text>
-          <br />
-          <br />
-          <Text strong>Note:</Text>
-          <br />
-          <Text>{`${data.p_note}`}</Text>
+          {data.p_note ? (
+            <>
+              <br />
+              <br />
+              <Text strong>Note:</Text>
+              <br />
+              <Text>{`${data.p_note}`}</Text>
+            </>
+          ) : (
+            <></>
+          )}
         </Descriptions.Item>
         <Descriptions.Item label={<Text strong>AREA ({data.unit})</Text>}>
           <Text>{`${data.area}`}</Text>

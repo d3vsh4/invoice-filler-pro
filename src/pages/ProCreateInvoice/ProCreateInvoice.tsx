@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col, message, Row, Space, Tag, Typography } from 'antd';
+import { Card, Col, message, Row, Select, Space, Tag, Typography } from 'antd';
 import ProForm, {
   ProFormSelect,
   ProFormGroup,
@@ -16,8 +16,14 @@ import InvoiceModal from './component/InvoiceModal';
 import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
 import { INITIAL_TEST_FORM_VALUES } from '../../constants/InitialValues';
 import moment from 'moment';
-
+import styles from './ProCreateInvoice.less';
+import { stateData } from './state-city';
+const { Option } = Select;
 const { Text } = Typography;
+
+const cityData = stateData;
+const states = Object.keys(cityData);
+
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -25,61 +31,121 @@ const waitTime = (time: number = 100) => {
     }, time);
   });
 };
-type DataProps = {
-  form?: any;
-  data?: FormStateTypes;
+
+const InvoiceInfoFormSection: React.FC = () => {
+  const dateFormat = 'DD/MM/YYYY';
+  return (
+    <>
+      <Row>
+        <ProFormText
+          rules={[{ required: true }]}
+          name="invoice_no"
+          label="Invoice Number"
+          placeholder="enter invoice number here"
+        />
+        <Col span={1}></Col>
+        <ProFormDatePicker
+          rules={[{ required: true }]}
+          name="invoice_date"
+          label="Date"
+          initialValue={moment(moment().toDate(), dateFormat)}
+          fieldProps={{ format: dateFormat }}
+        />
+      </Row>
+    </>
+  );
 };
-const CompanyFormSection: React.FC<AddressProps> = ({ prefix }) => (
+const AdressFormSection: React.FC<DataProps> = ({ prefix, form }) => {
+  const [cities, setCities] = React.useState(cityData[states[3]]);
+  // const [secondCity, setSecondCity] = React.useState(cityData[states[0]][0]);
+
+  const handleStateChange = (value: string) => {
+    setCities(cityData[value]);
+    form.setFieldsValue({ [prefix + '_city']: cityData[value][0] });
+    // setSecondCity(cityData[value][0]);
+  };
+
+  // const onSecondCityChange = (value: string) => {
+  //   setSecondCity(value);
+  // };
+  return (
+    <>
+      <ProFormText
+        rules={[{ required: true }]}
+        name={prefix + '_street'}
+        label="Street Address"
+        placeholder="Please enter the Street address"
+      />
+      <Row>
+        <ProFormSelect
+          rules={[{ required: true }]}
+          label="State"
+          name={prefix + '_state'}
+          initialValue={states[0]}
+          fieldProps={{ onChange: handleStateChange }}
+          options={states.map((s: string) => ({ value: s, label: s }))}
+        />
+        <Col span={1}></Col>
+
+        <ProFormSelect
+          rules={[{ required: true }]}
+          label="City"
+          name={prefix + '_city'}
+          options={cities.map((city: string) => ({ value: city, label: city }))}
+        />
+        <Col span={1}></Col>
+        <ProFormDigit
+          rules={[
+            {
+              required: true,
+              pattern: new RegExp('^[1-9]{1}[0-9]{2}[0-9]{3}$'),
+              message: 'Valid PIN is required',
+            },
+          ]}
+          name={prefix + '_zip'}
+          label="Postal/Zip Code"
+          placeholder="enter postal/zip"
+        />
+      </Row>
+    </>
+  );
+};
+const CompanyFormSection: React.FC<DataProps> = ({ prefix, form }) => (
   <Col>
     <Row>
-      <ProFormText
-        rules={[{ required: true }]}
-        name={prefix + '_name'}
-        // width="md"
-        label="Company Name"
-        placeholder="Please enter the name"
-      />
-      <ProFormText
-        rules={[{ required: true }]}
-        // width="md"
-        name={prefix + '_gstin'}
-        label="GSTIN"
-        placeholder="Please enter the GSTIN no."
-      />
+      <Col>
+        <ProFormText
+          rules={[{ required: true }]}
+          name={prefix + '_name'}
+          // width="md"
+          label="Company Name"
+          placeholder="Please enter the name"
+          normalize={(value) => (value || '').toUpperCase()}
+        />
+      </Col>
+      <Col span={1}></Col>
+      <Col>
+        <ProFormText
+          rules={[
+            {
+              required: true,
+              len: 15,
+              pattern: new RegExp('^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$'),
+              message: 'Not a valid GST',
+            },
+          ]}
+          normalize={(value) => (value || '').toUpperCase()}
+          // width="md"
+          name={prefix + '_gstin'}
+          label="GSTIN"
+          placeholder="Please enter the GSTIN no."
+        />
+      </Col>
     </Row>
-    <AdressFormSection prefix={prefix} />
+    <AdressFormSection prefix={prefix} form={form} />
   </Col>
 );
-const AdressFormSection: React.FC<AddressProps> = ({ prefix }) => (
-  <>
-    <ProFormText
-      rules={[{ required: true }]}
-      name={prefix + '_street'}
-      label="Street Address"
-      placeholder="Please enter the Street address"
-    />
-    <Row>
-      <ProFormText
-        rules={[{ required: true }]}
-        name={prefix + '_city'}
-        label="City"
-        placeholder="Please enter the city"
-      />
-      <ProFormText
-        rules={[{ required: true }]}
-        name={prefix + '_state'}
-        label="State"
-        placeholder="enter state"
-      />
-      <ProFormText
-        rules={[{ required: true }]}
-        name={prefix + '_zip'}
-        label="Postal/Zip Code"
-        placeholder="enter postal/zip"
-      />
-    </Row>
-  </>
-);
+
 //TODO: change type from any
 const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
   var isFixed = form.getFieldValue('rent_type') == 'fixed';
@@ -162,10 +228,17 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
           }}
         />
         <ProFormText
-          rules={[{ required: true }]}
+          rules={[
+            {
+              required: true,
+              pattern: new RegExp('[A-Z]{5}[0-9]{4}[A-Z]{1}'),
+              message: 'Not a valid PAN',
+            },
+          ]}
           name="pan"
           label="PAN"
           placeholder="enter PAN here"
+          normalize={(value) => (value || '').toUpperCase()}
           readonly
         />
         <ProFormText
@@ -173,6 +246,7 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
           name="sac"
           label="SAC"
           placeholder="enter SAC here"
+          normalize={(value) => (value || '').toUpperCase()}
           readonly
         />
       </Row>
@@ -188,56 +262,7 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
     </>
   );
 };
-const ParticularsFormSection: React.FC<DataProps> = ({ form }) => {
-  return (
-    <>
-      <ProFormText
-        rules={[{ required: true }]}
-        name="p_head"
-        label="Heading"
-        // width="xl"
-        placeholder="enter heading"
-      />
-      <ProFormTextArea
-        rules={[{ required: true }]}
-        name="p_content"
-        label="Narration"
-        // width="xl"
-        placeholder="write content here"
-      />
-      <ProFormTextArea
-        rules={[{ required: true }]}
-        name="p_note"
-        label="Note"
-        // width="xl"
-        placeholder="write note here"
-      />
-    </>
-  );
-};
-const InvoiceInfoFormSection: React.FC = () => {
-  const dateFormat = 'DD/MM/YYYY';
-  return (
-    <>
-      <Row>
-        <ProFormText
-          rules={[{ required: true }]}
-          name="invoice_no"
-          label="Invoice Number"
-          placeholder="enter invoice number here"
-        />
-        {/* <DatePicker defaultValue={moment('01/01/2015', dateFormat)} format={dateFormatList} /> */}
-        <ProFormDatePicker
-          rules={[{ required: true }]}
-          name="invoice_date"
-          label="Date"
-          initialValue={moment(moment().toDate(), dateFormat)}
-          fieldProps={{ format: dateFormat }}
-        />
-      </Row>
-    </>
-  );
-};
+
 const SupplyInfoFormSection: React.FC<DataProps> = ({ form }) => {
   const setSupplyAdress = (prefix: string) => {
     try {
@@ -269,10 +294,36 @@ const SupplyInfoFormSection: React.FC<DataProps> = ({ form }) => {
         fieldProps={{ onChange: (e) => setSupplyAdress(e.target.value) }}
       />
       <Col span={3}></Col>
-      <Col>
-        <AdressFormSection prefix="s" />
+      <Col span={12}>
+        <AdressFormSection prefix="s" form={form} />
       </Col>
     </Row>
+  );
+};
+const ParticularsFormSection: React.FC<DataProps> = ({ form }) => {
+  return (
+    <>
+      <ProFormText
+        rules={[{ required: true }]}
+        name="p_head"
+        label="Heading"
+        // width="xl"
+        placeholder="enter heading"
+      />
+      <ProFormTextArea
+        rules={[{ required: true }]}
+        name="p_content"
+        label="Narration"
+        // width="xl"
+        placeholder="write content here"
+      />
+      <ProFormTextArea
+        name="p_note"
+        label="Note"
+        // width="xl"
+        placeholder="write note here"
+      />
+    </>
   );
 };
 export default () => {
@@ -288,80 +339,82 @@ export default () => {
   return (
     <>
       <Row justify="center">
-        <ProForm
-          form={form}
-          onValuesChange={(changedValue, allFields) => {
-            setState((prevState) => ({
-              ...prevState,
-              ...allFields,
-            }));
-            console.log(changedValue);
-          }}
-          requiredMark="optional"
-          onFinish={async (values: FormStateTypes) => {
-            setState((prevState) => ({
-              ...prevState,
-              isSubmitting: true,
-            }));
-            await waitTime(100);
-            setState((prevState) => ({
-              ...prevState,
-              isSubmitting: true,
-              submited: true,
-            }));
-            // await createInvoice({ ...values });
-            console.log(values);
-            message.success('Submitted successfully');
-          }}
-          submitter={{
-            searchConfig: {
-              submitText: 'Submit',
-            },
-            render: (_, dom) => (
-              <>
-                <InvoiceModal
-                  setData={setState}
-                  data={state}
-                  children={dom.pop()}
-                  checkInputForm={checkForm}
-                />
-                {dom}
-              </>
-            ),
-            // submitButtonProps: {
-            //   size: 'large',
-            //   style: {
-            //     width: '100%',
-            //   },
-            // },
-          }}
-          initialValues={INITIAL_FORM_VALUES}
-        >
-          <Card title="Invoice Info">
-            <InvoiceInfoFormSection />
-          </Card>
-          <Row>
-            <Col span={12}>
-              <Card title="Billing From">
-                <CompanyFormSection prefix="bf" />
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card title="Billing To">
-                <CompanyFormSection prefix="bt" />
-              </Card>
-            </Col>
-          </Row>
-          <Card title="Supply Info">
-            <SupplyInfoFormSection form={form} />
-          </Card>
-          <Card title="Rent Info">
-            <RentInfoFormSection form={form} data={state} />
-          </Card>
-          <Card title="Particulars">
-            <ParticularsFormSection form={form} />
-          </Card>
-        </ProForm>
+        <Col span={24}>
+          <ProForm
+            form={form}
+            onValuesChange={(changedValue, allFields) => {
+              setState((prevState) => ({
+                ...prevState,
+                ...allFields,
+              }));
+              console.log(changedValue);
+            }}
+            requiredMark="optional"
+            onFinish={async (values: FormStateTypes) => {
+              setState((prevState) => ({
+                ...prevState,
+                isSubmitting: true,
+              }));
+              await waitTime(100);
+              setState((prevState) => ({
+                ...prevState,
+                isSubmitting: true,
+                submited: true,
+              }));
+              // await createInvoice({ ...values });
+              console.log(values);
+              message.success('Submitted successfully');
+            }}
+            submitter={{
+              searchConfig: {
+                submitText: 'Submit',
+              },
+              render: (_, dom) => (
+                <>
+                  <InvoiceModal
+                    setData={setState}
+                    data={state}
+                    children={dom.pop()}
+                    checkInputForm={checkForm}
+                  />
+                  {dom}
+                </>
+              ),
+              // submitButtonProps: {
+              //   size: 'large',
+              //   style: {
+              //     width: '100%',
+              //   },
+              // },
+            }}
+            initialValues={INITIAL_FORM_VALUES}
+          >
+            <Card title="Invoice Info">
+              <InvoiceInfoFormSection />
+            </Card>
+            <Row>
+              <Col span={12}>
+                <Card title="Billing From">
+                  <CompanyFormSection prefix="bf" form={form} />
+                </Card>
+              </Col>
+              <Col span={12}>
+                <Card title="Billing To">
+                  <CompanyFormSection prefix="bt" form={form} />
+                </Card>
+              </Col>
+            </Row>
+            <Card title="Supply Info">
+              <SupplyInfoFormSection form={form} />
+            </Card>
+            <Card title="Rent Info">
+              <RentInfoFormSection form={form} data={state} />
+            </Card>
+            <Card title="Particulars">
+              <ParticularsFormSection form={form} />
+            </Card>
+          </ProForm>
+        </Col>
       </Row>
       {/* </Row> */}
     </>

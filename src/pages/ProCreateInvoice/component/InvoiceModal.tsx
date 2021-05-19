@@ -1,6 +1,6 @@
 import { Button, Modal, Space } from 'antd';
 import React from 'react';
-import GenPrint from './GenPrint';
+import GenPrint from '../../../components/common/GenPrint';
 import ButtonGroup from 'antd/es/button/button-group';
 import InvoiceSlip from './InvoiceSlip';
 import { convertRupeeToWords } from '@/utils/utils';
