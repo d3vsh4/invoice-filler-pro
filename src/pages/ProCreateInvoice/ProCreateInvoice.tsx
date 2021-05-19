@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, message, Row, Space, Tag, Typography } from 'antd';
+import { Card, Col, message, Row, Space, Tag, Typography } from 'antd';
 import ProForm, {
   ProFormSelect,
   ProFormGroup,
@@ -25,29 +25,30 @@ const waitTime = (time: number = 100) => {
     }, time);
   });
 };
-
+type DataProps = {
+  form?: any;
+  data?: FormStateTypes;
+};
 const CompanyFormSection: React.FC<AddressProps> = ({ prefix }) => (
-  <>
-    <ProFormGroup>
+  <Col>
+    <Row>
       <ProFormText
         rules={[{ required: true }]}
         name={prefix + '_name'}
-        width="md"
+        // width="md"
         label="Company Name"
         placeholder="Please enter the name"
-        readonly={prefix == 'bf' ? true : undefined}
       />
       <ProFormText
         rules={[{ required: true }]}
-        width="md"
+        // width="md"
         name={prefix + '_gstin'}
         label="GSTIN"
         placeholder="Please enter the GSTIN no."
-        readonly={prefix == 'bf' ? true : undefined}
       />
-    </ProFormGroup>
+    </Row>
     <AdressFormSection prefix={prefix} />
-  </>
+  </Col>
 );
 const AdressFormSection: React.FC<AddressProps> = ({ prefix }) => (
   <>
@@ -56,35 +57,31 @@ const AdressFormSection: React.FC<AddressProps> = ({ prefix }) => (
       name={prefix + '_street'}
       label="Street Address"
       placeholder="Please enter the Street address"
-      readonly={prefix == 'bf' ? true : undefined}
     />
-    <ProFormGroup>
+    <Row>
       <ProFormText
         rules={[{ required: true }]}
         name={prefix + '_city'}
         label="City"
         placeholder="Please enter the city"
-        readonly={prefix == 'bf' ? true : undefined}
       />
       <ProFormText
         rules={[{ required: true }]}
         name={prefix + '_state'}
         label="State"
         placeholder="enter state"
-        readonly={prefix == 'bf' ? true : undefined}
       />
       <ProFormText
         rules={[{ required: true }]}
         name={prefix + '_zip'}
         label="Postal/Zip Code"
         placeholder="enter postal/zip"
-        readonly={prefix == 'bf' ? true : undefined}
       />
-    </ProFormGroup>
+    </Row>
   </>
 );
 //TODO: change type from any
-const RentInfoFormSection: React.FC<any> = ({ form }) => {
+const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
   var isFixed = form.getFieldValue('rent_type') == 'fixed';
   const setTaxableAmount = () => {
     if (!isFixed) {
@@ -93,9 +90,18 @@ const RentInfoFormSection: React.FC<any> = ({ form }) => {
       });
     }
   };
+  var isIGST = data?.bf_state === data?.bt_state;
+  // var isIGST = form.getFieldValue('bt_state') == form.getFieldValue('bf_state');
+  var tax_amount = isIGST
+    ? Math.ceil((form.getFieldValue('taxable_amount') * 18) / 100)
+    : 2 * Math.ceil((form.getFieldValue('taxable_amount') * 9) / 100);
+  // var tax_amount = isIGST
+  //   ? Math.ceil((data?.taxable_amount! * 18) / 100)
+  //   : 2 * Math.ceil((data?.taxable_amount! * 9) / 100);
+  var taxed_amount = Math.ceil(form.getFieldValue('taxable_amount')) + tax_amount;
   return (
     <>
-      <ProFormGroup>
+      <Row justify="space-around">
         <ProFormSelect
           rules={[{ required: true }]}
           options={[
@@ -146,14 +152,6 @@ const RentInfoFormSection: React.FC<any> = ({ form }) => {
         <ProFormDigit
           rules={[{ required: true }]}
           label="Taxable Amount :"
-          /*
-          <Typography.Text>
-              Taxable Amount :{' ~ ₹ '}
-              <Typography.Text copyable type="secondary">
-                {amount > 0 ? amount : 0}
-              </Typography.Text>
-            </Typography.Text>
-          */
           name="taxable_amount"
           placeholder="taxable amount"
           initialValue={0}
@@ -162,56 +160,6 @@ const RentInfoFormSection: React.FC<any> = ({ form }) => {
             formatter: (value) => `₹ ${value}`,
             parser: (value) => value!.replace('₹ ', ''),
           }}
-        />
-      </ProFormGroup>
-    </>
-  );
-};
-const ParticularsFormSection: React.FC<any> = ({ form }) => {
-  return (
-    <>
-      <ProFormText
-        rules={[{ required: true }]}
-        name="p_head"
-        label="Heading"
-        width="xl"
-        placeholder="enter heading"
-      />
-      <ProFormTextArea
-        rules={[{ required: true }]}
-        name="p_content"
-        label="Content"
-        width="xl"
-        placeholder="write content here"
-      />
-      <ProFormTextArea
-        rules={[{ required: true }]}
-        name="p_note"
-        label="Note"
-        width="xl"
-        placeholder="write note here"
-      />
-    </>
-  );
-};
-const InvoiceInfoFormSection: React.FC = () => {
-  const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
-  return (
-    <>
-      <ProFormGroup>
-        <ProFormText
-          rules={[{ required: true }]}
-          name="invoice_no"
-          label="Invoice Number"
-          placeholder="enter invoice number here"
-        />
-        {/* <DatePicker defaultValue={moment('01/01/2015', dateFormatList[0])} format={dateFormatList} /> */}
-        <ProFormDatePicker
-          rules={[{ required: true }]}
-          name="invoice_date"
-          label="date"
-          initialValue={moment().toDate()}
-          fieldProps={{ format: dateFormatList[0] }}
         />
         <ProFormText
           rules={[{ required: true }]}
@@ -227,11 +175,70 @@ const InvoiceInfoFormSection: React.FC = () => {
           placeholder="enter SAC here"
           readonly
         />
-      </ProFormGroup>
+      </Row>
+      <Text>
+        applied tax type:
+        <Text type={'danger'}>
+          {isIGST
+            ? ` IGST @ 18% = ₹ ${tax_amount} `
+            : ` CGST @ 9% = ₹ ${tax_amount / 2} and SGST @ 9%= ₹ ${tax_amount / 2} `}
+        </Text>
+        taxed amount: <Text type={'danger'}> ₹ {taxed_amount}</Text>
+      </Text>
     </>
   );
 };
-const SupplyInfoFormSection: React.FC<any> = ({ form }) => {
+const ParticularsFormSection: React.FC<DataProps> = ({ form }) => {
+  return (
+    <>
+      <ProFormText
+        rules={[{ required: true }]}
+        name="p_head"
+        label="Heading"
+        // width="xl"
+        placeholder="enter heading"
+      />
+      <ProFormTextArea
+        rules={[{ required: true }]}
+        name="p_content"
+        label="Narration"
+        // width="xl"
+        placeholder="write content here"
+      />
+      <ProFormTextArea
+        rules={[{ required: true }]}
+        name="p_note"
+        label="Note"
+        // width="xl"
+        placeholder="write note here"
+      />
+    </>
+  );
+};
+const InvoiceInfoFormSection: React.FC = () => {
+  const dateFormat = 'DD/MM/YYYY';
+  return (
+    <>
+      <Row>
+        <ProFormText
+          rules={[{ required: true }]}
+          name="invoice_no"
+          label="Invoice Number"
+          placeholder="enter invoice number here"
+        />
+        {/* <DatePicker defaultValue={moment('01/01/2015', dateFormat)} format={dateFormatList} /> */}
+        <ProFormDatePicker
+          rules={[{ required: true }]}
+          name="invoice_date"
+          label="Date"
+          initialValue={moment(moment().toDate(), dateFormat)}
+          fieldProps={{ format: dateFormat }}
+        />
+      </Row>
+    </>
+  );
+};
+const SupplyInfoFormSection: React.FC<DataProps> = ({ form }) => {
   const setSupplyAdress = (prefix: string) => {
     try {
       form.setFieldsValue({
@@ -245,7 +252,7 @@ const SupplyInfoFormSection: React.FC<any> = ({ form }) => {
     }
   };
   return (
-    <>
+    <Row>
       <ProFormRadio.Group
         name="s_addr_choice"
         label="Same Address as:"
@@ -261,14 +268,17 @@ const SupplyInfoFormSection: React.FC<any> = ({ form }) => {
         ]}
         fieldProps={{ onChange: (e) => setSupplyAdress(e.target.value) }}
       />
-      <AdressFormSection prefix="s" />
-    </>
+      <Col span={3}></Col>
+      <Col>
+        <AdressFormSection prefix="s" />
+      </Col>
+    </Row>
   );
 };
 export default () => {
   const [form] = ProForm.useForm();
   const [state, setState] = useState<FormStateTypes>({
-    ...INITIAL_TEST_FORM_VALUES,
+    ...INITIAL_FORM_VALUES,
   });
   const checkForm = async () =>
     await form
@@ -276,7 +286,7 @@ export default () => {
       .then((val) => true)
       .catch((_) => false);
   return (
-    <PageContainer>
+    <>
       <Row justify="center">
         <ProForm
           form={form}
@@ -293,7 +303,7 @@ export default () => {
               ...prevState,
               isSubmitting: true,
             }));
-            await waitTime(2000);
+            await waitTime(100);
             setState((prevState) => ({
               ...prevState,
               isSubmitting: true,
@@ -325,40 +335,35 @@ export default () => {
             //   },
             // },
           }}
-          initialValues={INITIAL_TEST_FORM_VALUES}
+          initialValues={INITIAL_FORM_VALUES}
         >
           <Card title="Invoice Info">
-            <ProFormGroup>
-              <InvoiceInfoFormSection />
-            </ProFormGroup>
+            <InvoiceInfoFormSection />
           </Card>
-          <Card title="Billing From">
-            <ProFormGroup>
-              <CompanyFormSection prefix="bf" />
-            </ProFormGroup>
-          </Card>
-          <Card title="Billing To">
-            <ProFormGroup>
-              <CompanyFormSection prefix="bt" />
-            </ProFormGroup>
-          </Card>
+          <Row>
+            <Col span={12}>
+              <Card title="Billing From">
+                <CompanyFormSection prefix="bf" />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card title="Billing To">
+                <CompanyFormSection prefix="bt" />
+              </Card>
+            </Col>
+          </Row>
           <Card title="Supply Info">
-            <ProFormGroup>
-              <SupplyInfoFormSection form={form} />
-            </ProFormGroup>
+            <SupplyInfoFormSection form={form} />
           </Card>
           <Card title="Rent Info">
-            <ProFormGroup>
-              <RentInfoFormSection form={form} />
-            </ProFormGroup>
+            <RentInfoFormSection form={form} data={state} />
           </Card>
           <Card title="Particulars">
-            <ProFormGroup>
-              <ParticularsFormSection form={form} />
-            </ProFormGroup>
+            <ParticularsFormSection form={form} />
           </Card>
         </ProForm>
       </Row>
-    </PageContainer>
+      {/* </Row> */}
+    </>
   );
 };

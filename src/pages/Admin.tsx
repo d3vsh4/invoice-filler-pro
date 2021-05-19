@@ -9,7 +9,7 @@ export default (): React.ReactNode => {
     <PageHeaderWrapper
       content={intl.formatMessage({
         id: 'pages.admin.subPage.title',
-        defaultMessage: ' 这个页面只有 admin 权限才能查看',
+        defaultMessage: ' This page is only admin Permissions can only view',
       })}
     >
       <Card>

@@ -51,6 +51,7 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
         }));
         resolve(true);
       } catch (error) {
+        console.log(error);
         reject(false);
       }
     });
@@ -97,15 +98,14 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
           <Button key="back" onClick={handleCancel}>
             Return
           </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            disabled={!props.data.submitted}
-            loading={confirmLoading}
-            onClick={handleOk}
-          >
-            Print
-          </Button>,
+          // <Button
+          //   key="submit"
+          //   type="primary"
+          //   disabled={!props.data.submitted}
+          //   loading={confirmLoading}
+          // >
+          //   Print
+          // </Button>,
           //     <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
           //     Submit
           //   </Button>,

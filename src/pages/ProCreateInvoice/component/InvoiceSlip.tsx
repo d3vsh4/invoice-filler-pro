@@ -11,9 +11,9 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
         style={{ minWidth: '872px' }}
         // column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         size="small"
-        column={8}
+        column={7}
       >
-        <Descriptions.Item span={8} label={<Title level={5}>TAX INVOICE</Title>}>
+        <Descriptions.Item span={7} label={<Title level={5}>TAX INVOICE</Title>}>
           <Text strong>{data.bf_name}</Text>
           <br />
           <Text>{`${data.bf_street}, ${data.bf_city}, ${data.bf_state} - ${data.bf_zip}`}</Text>
@@ -21,7 +21,7 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
           <Text type="danger">GSTIN- {data.bf_gstin}</Text>
         </Descriptions.Item>
 
-        <Descriptions.Item span={3} label={<Text strong>BILL TO</Text>}>
+        <Descriptions.Item span={2} label={<Text strong>BILL TO</Text>}>
           <Text strong>{data.bt_name}</Text>
           <br />
           <Text>{`${data.bt_street}, ${data.bt_city}, ${data.bt_state} - ${data.bt_zip}`}</Text>
@@ -45,7 +45,7 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
           <Text>{data.sac}</Text>
         </Descriptions.Item>
 
-        <Descriptions.Item span={5} label={<Text strong>PARTICULARS</Text>}>
+        <Descriptions.Item span={4} label={<Text strong>PARTICULARS</Text>}>
           <Text strong>{`${data.p_head}`}</Text>
           <br />
           <br />
@@ -59,10 +59,10 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
         <Descriptions.Item label={<Text strong>AREA ({data.unit})</Text>}>
           <Text>{`${data.area}`}</Text>
         </Descriptions.Item>
-        <Descriptions.Item span={1} label={<Text strong>RATE/ {data.unit}</Text>}>
+        <Descriptions.Item label={<Text strong>RATE/ {data.unit}</Text>}>
           <Text>₹ {data.per_rate}</Text>
         </Descriptions.Item>
-        <Descriptions.Item label={<Text strong>TAXABLE AMOUNT</Text>}>
+        <Descriptions.Item span={2} label={<Text strong>TAXABLE AMOUNT</Text>}>
           <Text>{`₹ ${data.taxable_amount}`}</Text>
         </Descriptions.Item>
 
@@ -98,7 +98,7 @@ const InvoiceSlip: React.FC<DataProps> = ({ data }) => {
           </Text>
         </Descriptions.Item>
 
-        <Descriptions.Item span={8} label={<Text strong>TOTAL PAYABLE AMOUNT</Text>}>
+        <Descriptions.Item span={7} label={<Text strong>TOTAL PAYABLE AMOUNT</Text>}>
           <Text strong style={{ color: 'darkgreen' }}>
             {data.amount_in_words.toUpperCase()}
           </Text>

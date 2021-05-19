@@ -7,8 +7,8 @@ const Settings: LayoutSettings & {
   navTheme: 'light',
   // Dawn
   primaryColor: '#1890ff',
-  layout: 'mix',
-  contentWidth: 'Fluid',
+  layout: 'top',
+  contentWidth: 'Fixed',
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,

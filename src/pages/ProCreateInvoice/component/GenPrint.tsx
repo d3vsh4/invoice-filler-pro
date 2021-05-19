@@ -8,7 +8,7 @@ class PrintComponent extends Component {
     super(props);
   }
   render() {
-    return <div>{this.props.children}</div>;
+    return <>{this.props.children}</>;
   }
 }
 export default class GenPrint extends Component {

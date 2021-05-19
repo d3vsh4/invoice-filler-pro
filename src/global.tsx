@@ -5,6 +5,7 @@ const { pwa } = defaultSettings;
 const isHttps = document.location.protocol === 'https:'; // if pwa is true
 
 if (pwa) {
+  console.log(pwa, 'yesyespwagogo');
   // Notify user if offline now
   window.addEventListener('sw.offline', () => {
     message.warning(
@@ -76,6 +77,8 @@ if (pwa) {
     });
   });
 } else if ('serviceWorker' in navigator && isHttps) {
+  console.log(pwa, 'nonononopwagogo');
+
   // unregister service worker
   const { serviceWorker } = navigator;
 
