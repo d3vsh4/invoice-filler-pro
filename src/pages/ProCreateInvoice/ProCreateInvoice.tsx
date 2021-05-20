@@ -81,6 +81,7 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, form }) => {
           rules={[{ required: true }]}
           label="State"
           name={prefix + '_state'}
+          showSearch
           initialValue={states[0]}
           fieldProps={{ onChange: handleStateChange }}
           options={states.map((s: string) => ({ value: s, label: s }))}
@@ -89,6 +90,7 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, form }) => {
 
         <ProFormSelect
           rules={[{ required: true }]}
+          showSearch
           label="City"
           name={prefix + '_city'}
           options={cities.map((city: string) => ({ value: city, label: city }))}
@@ -158,13 +160,14 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
   };
   var isIGST = data?.bf_state === data?.bt_state;
   // var isIGST = form.getFieldValue('bt_state') == form.getFieldValue('bf_state');
-  var tax_amount = isIGST
-    ? Math.ceil((form.getFieldValue('taxable_amount') * 18) / 100)
-    : 2 * Math.ceil((form.getFieldValue('taxable_amount') * 9) / 100);
+  const tax_amount = () =>
+    isIGST
+      ? Math.ceil((form.getFieldValue('taxable_amount') * 18) / 100)
+      : 2 * Math.ceil((form.getFieldValue('taxable_amount') * 9) / 100);
   // var tax_amount = isIGST
   //   ? Math.ceil((data?.taxable_amount! * 18) / 100)
   //   : 2 * Math.ceil((data?.taxable_amount! * 9) / 100);
-  var taxed_amount = Math.ceil(form.getFieldValue('taxable_amount')) + tax_amount;
+  const taxed_amount = () => Math.ceil(form.getFieldValue('taxable_amount')) + tax_amount();
   return (
     <>
       <Row justify="space-around">
@@ -250,15 +253,19 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
           readonly
         />
       </Row>
-      <Text>
-        applied tax type:
-        <Text type={'danger'}>
-          {isIGST
-            ? ` IGST @ 18% = ₹ ${tax_amount} `
-            : ` CGST @ 9% = ₹ ${tax_amount / 2} and SGST @ 9%= ₹ ${tax_amount / 2} `}
+      {form.getFieldValue('taxable_amount') && data?.taxable_amount ? (
+        <Text>
+          applied tax type:
+          <Text type={'danger'}>
+            {isIGST
+              ? ` IGST @ 18% = ₹ ${tax_amount()} `
+              : ` CGST @ 9% = ₹ ${tax_amount() / 2} and SGST @ 9%= ₹ ${tax_amount() / 2} `}
+          </Text>
+          taxed amount: <Text type={'danger'}> ₹ {taxed_amount()}</Text>
         </Text>
-        taxed amount: <Text type={'danger'}> ₹ {taxed_amount}</Text>
-      </Text>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

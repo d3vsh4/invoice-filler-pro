@@ -39,7 +39,7 @@ type AddressProps = {
   prefix: string;
 };
 type DataProps = {
-  data: FormStateTypes;
-  setData?: any;
   form?: FormInstance<FormStateTypes>;
+  data?: FormStateTypes;
+  prefix?: string;
 };
