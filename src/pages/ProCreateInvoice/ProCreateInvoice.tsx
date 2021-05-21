@@ -251,7 +251,7 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
           readonly
         />
       </Row>
-      {form.getFieldValue('taxable_amount') && data?.taxable_amount ? (
+      {form.getFieldValue('taxable_amount') ? (
         <Text>
           applied tax type:
           <Text type={'danger'}>
