@@ -20,107 +20,95 @@ export const isAntDesignProOrDev = (): boolean => {
   return isAntDesignPro();
 };
 
-
-function getOnes(number:number) {
-  const ones = [
-    "",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-  ];
-  return ones[number] || "";
-}
-
-function getTeens(number:number) {
-  const teens = [
-    "ten",
-    "eleven",
-    "twelve",
-    "thirteen",
-    "fourteen",
-    "fifteen",
-    "sixteen",
-    "seventeen",
-    "eighteen",
-    "nineteen",
-  ];
-  return teens[number] || "";
-}
-
-function getTens(number:number) {
-  const tens = [
-    "",
-    "",
-    "twenty",
-    "thirty",
-    "forty",
-    "fifty",
-    "sixty",
-    "seventy",
-    "eighty",
-    "ninety",
-  ];
-  return tens[number] || "";
-}
-
-function getHundreds(num:number) {
-  if (num > 0 && num < 10) {
-    return getOnes(num);
-  }
-  if (num >= 10 && num < 20) {
-    return getTeens(num % 10);
-  }
-  if (num >= 20 && num < 100) {
-    return `${getTens(Math.floor(num / 10))} ${getOnes(num % 10)}`;
-  }
-  return "";
-}
-export const convertRupeeToWords = (input:string):string => {
+export const convertRupeeToWords = (input: string): string => {
   const rupees = Number(parseInt(input, 10));
   const output = [];
 
   if (rupees === 0) {
-    output.push("zero");
+    output.push('zero');
   } else if (rupees === 1) {
-    output.push("one");
+    output.push('one');
   } else {
     const crores = Math.floor(rupees / 10000000) % 100;
     if (crores > 0) {
-      output.push(`${getHundreds(crores)} crore`);
+      output.push(`${helper.getHundreds(crores)} crore`);
     }
 
     const lakhs = Math.floor(rupees / 100000) % 100;
     if (lakhs > 0) {
-      output.push(`${getHundreds(lakhs)} lakh`);
+      output.push(`${helper.getHundreds(lakhs)} lakh`);
     }
 
     const thousands = Math.floor(rupees / 1000) % 100;
     if (thousands > 0) {
-      output.push(`${getHundreds(thousands)} thousand`);
+      output.push(`${helper.getHundreds(thousands)} thousand`);
     }
 
     const hundreds = Math.floor((rupees % 1000) / 100);
     if (hundreds > 0 && hundreds < 10) {
-      output.push(`${getOnes(hundreds)} hundred`);
+      output.push(`${helper.getOnes(hundreds)} hundred`);
     }
 
     const tens = rupees % 100;
     if (tens > 0) {
-      if (rupees > 100) output.push("and");
-      output.push(`${getHundreds(tens)}`);
+      if (rupees > 100) output.push('and');
+      output.push(`${helper.getHundreds(tens)}`);
     }
   }
 
-  return ["Rupees", ...output, "only"]
-    .join(" ")
+  return ['Rupees', ...output, 'only']
+    .join(' ')
     .split(/\s/)
     .filter((e) => e)
     .map((e) => e.substr(0, 1).toUpperCase() + e.substr(1))
-    .join(" ");
-}
+    .join(' ');
+};
+
+const helper = {
+  getOnes: function (number: number) {
+    const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+    return ones[number] || '';
+  },
+  getTeens: function (number: number) {
+    const teens = [
+      'ten',
+      'eleven',
+      'twelve',
+      'thirteen',
+      'fourteen',
+      'fifteen',
+      'sixteen',
+      'seventeen',
+      'eighteen',
+      'nineteen',
+    ];
+    return teens[number] || '';
+  },
+  getTens: function (number: number) {
+    const tens = [
+      '',
+      '',
+      'twenty',
+      'thirty',
+      'forty',
+      'fifty',
+      'sixty',
+      'seventy',
+      'eighty',
+      'ninety',
+    ];
+    return tens[number] || '';
+  },
+  getHundreds: function (num: number) {
+    if (num > 0 && num < 10) {
+      return this.getOnes(num);
+    }
+    if (num >= 10 && num < 20) {
+      return this.getTeens(num % 10);
+    }
+    if (num >= 20 && num < 100) {
+      return `${this.getTens(Math.floor(num / 10))} ${this.getOnes(num % 10)}`;
+    }
+    return '';
+  },
+};

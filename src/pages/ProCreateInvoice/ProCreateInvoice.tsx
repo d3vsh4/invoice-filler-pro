@@ -2,23 +2,19 @@ import React from 'react';
 import { Card, Col, message, Row, Select, Space, Tag, Typography } from 'antd';
 import ProForm, {
   ProFormSelect,
-  ProFormGroup,
   ProFormDigit,
   ProFormText,
   ProFormTextArea,
-  ProFormCheckbox,
   ProFormRadio,
   ProFormDatePicker,
 } from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
 import { useState } from 'react';
 import InvoiceModal from './component/InvoiceModal';
 import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
 import { INITIAL_TEST_FORM_VALUES } from '../../constants/InitialValues';
 import moment from 'moment';
 import styles from './ProCreateInvoice.less';
-import { stateData } from './state-city';
-const { Option } = Select;
+import { stateData } from './data/state-city';
 const { Text } = Typography;
 
 const cityData = stateData;
@@ -85,6 +81,7 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, form }) => {
           initialValue={states[0]}
           fieldProps={{ onChange: handleStateChange }}
           options={states.map((s: string) => ({ value: s, label: s }))}
+          allowClear={false}
         />
         <Col span={1}></Col>
 
@@ -94,6 +91,7 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, form }) => {
           label="City"
           name={prefix + '_city'}
           options={cities.map((city: string) => ({ value: city, label: city }))}
+          allowClear={false}
         />
         <Col span={1}></Col>
         <ProFormDigit
@@ -423,7 +421,6 @@ export default () => {
           </ProForm>
         </Col>
       </Row>
-      {/* </Row> */}
     </>
   );
 };

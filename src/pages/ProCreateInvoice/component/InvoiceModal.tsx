@@ -2,20 +2,9 @@ import { Button, Modal, Space } from 'antd';
 import React from 'react';
 import GenPrint from '@/components/common/GenPrint';
 import ButtonGroup from 'antd/es/button/button-group';
-import InvoiceSlip from './InvoiceSlip';
+import InvoiceSlip from '@/pages/components/InvoiceSlip';
 import { convertRupeeToWords } from '@/utils/utils';
 
-// const printHelper: any = async () => {
-//     // var content = document.getElementById("print-container")!;
-//     var content = document.getElementsByTagName("html")[0]!;
-//     var pri: any = document.getElementById("ifmcontentstoprint")!.contentWindow;
-//     pri.document.open();
-//     pri.document.write(content.innerHTML);
-//     // ReactDOM.render(<AreaForm />, pri.document.getElementById('root'));
-//     pri.document.close();
-//     pri.focus();
-//     setTimeout(() => pri.print(), 2000)
-// }
 type InvoiceModal = {
   setData: React.Dispatch<React.SetStateAction<FormStateTypes>>;
   data: FormStateTypes;
@@ -66,7 +55,6 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
   };
 
   const handleOk = () => {
-    // printHelper();
     setConfirmLoading(true);
     setTimeout(() => {
       setVisible(false);
@@ -112,11 +100,9 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
           <Space>{props.children}</Space>, //the buttons from the from
         ]}
       >
-        <p>
-          <GenPrint>
-            <InvoiceSlip data={props.data} />
-          </GenPrint>
-        </p>
+        <GenPrint>
+          <InvoiceSlip data={props.data} />
+        </GenPrint>
       </Modal>
     </>
   );
