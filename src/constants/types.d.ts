@@ -42,4 +42,5 @@ type DataProps = {
   form?: FormInstance<FormStateTypes>;
   data?: FormStateTypes;
   prefix?: string;
+  actionRef?: React.MutableRefObject<ProDescriptionsActionType | undefined>;
 };

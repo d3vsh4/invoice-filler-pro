@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Card, Col, message, Row, Select, Space, Tag, Typography } from 'antd';
 import ProForm, {
   ProFormSelect,
@@ -16,6 +16,8 @@ import moment from 'moment';
 import styles from './ProCreateInvoice.less';
 import { stateData } from './data/state-city';
 import Title from 'antd/lib/typography/Title';
+import { ProDescriptionsActionType } from '@ant-design/pro-descriptions';
+import ProDescriptions from '@ant-design/pro-descriptions';
 const { Text } = Typography;
 
 const cityData = stateData;
@@ -166,28 +168,25 @@ const CompanyFormSection: React.FC<DataProps> = ({ prefix, form }) => (
 );
 
 //TODO: change type from any
-const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
+const RentInfoFormSection: React.FC<DataProps> = ({ form, data, actionRef }) => {
   var isFixed = form.getFieldValue('rent_type') == 'fixed';
   const setTaxableAmount = () => {
     if (!isFixed) {
       form.setFieldsValue({
-        taxable_amount: Math.ceil(form.getFieldValue('area') * form.getFieldValue('per_rate')),
+        taxable_amount: Math.round(form.getFieldValue('area') * form.getFieldValue('per_rate')),
       });
     }
   };
   var isIGST = data?.bf_state === data?.bt_state;
   // var isIGST = form.getFieldValue('bt_state') == form.getFieldValue('bf_state');
-  const tax_amount = () =>
-    isIGST
-      ? Math.ceil((form.getFieldValue('taxable_amount') * 18) / 100)
-      : 2 * Math.ceil((form.getFieldValue('taxable_amount') * 9) / 100);
+  const tax_amount = () => Math.round((form.getFieldValue('taxable_amount') * 18) / 100);
   // var tax_amount = isIGST
-  //   ? Math.ceil((data?.taxable_amount! * 18) / 100)
-  //   : 2 * Math.ceil((data?.taxable_amount! * 9) / 100);
-  const taxed_amount = () => Math.ceil(form.getFieldValue('taxable_amount')) + tax_amount();
+  //   ? Math.round((data?.taxable_amount! * 18) / 100)
+  //   : 2 * Math.round((data?.taxable_amount! * 9) / 100);
+  const taxed_amount = () => form.getFieldValue('taxable_amount') + tax_amount();
   return (
-    <>
-      <Row justify="space-around">
+    <Row>
+      <Col span={10}>
         <ProFormSelect
           rules={[{ required: true }]}
           options={[
@@ -247,9 +246,39 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
             parser: (value) => value!.replace('₹ ', ''),
           }}
         />
-      </Row>
-      {form.getFieldValue('taxable_amount') ? (
-        <Text>
+      </Col>
+      <Col span={4} />
+      <Col>
+        <ProDescriptions
+          actionRef={actionRef}
+          title="Tax Information"
+          column={1}
+          labelStyle={{ backgroundColor: 'white' }}
+          contentStyle={{ color: 'red', fontWeight: 'bold' }}
+          bordered
+        >
+          <ProDescriptions.Item label="Taxable amount">
+            {`₹ ${form.getFieldValue('taxable_amount')}`}
+          </ProDescriptions.Item>
+          {isIGST ? (
+            <ProDescriptions.Item label="IGST @ 18%">{`₹ ${tax_amount()}`}</ProDescriptions.Item>
+          ) : (
+            <>
+              <ProDescriptions.Item label="CGST @ 9%">
+                {`₹ ${tax_amount() / 2}`}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item label="SGST @ 9%">
+                {`₹ ${tax_amount() / 2}`}
+              </ProDescriptions.Item>
+            </>
+          )}
+          <ProDescriptions.Item label="Total tax">{`₹ ${tax_amount()}`}</ProDescriptions.Item>
+          <ProDescriptions.Item
+            label="Payabal amount"
+            contentStyle={{ color: 'green' }}
+          >{`₹ ${taxed_amount()}`}</ProDescriptions.Item>
+        </ProDescriptions>
+        {/* <Text>
           applied tax type:
           <Text type={'danger'}>
             {isIGST
@@ -257,11 +286,9 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
               : ` CGST @ 9% = ₹ ${tax_amount() / 2} and SGST @ 9%= ₹ ${tax_amount() / 2} `}
           </Text>
           taxed amount: <Text type={'danger'}> ₹ {taxed_amount()}</Text>
-        </Text>
-      ) : (
-        <></>
-      )}
-    </>
+        </Text> */}
+      </Col>
+    </Row>
   );
 };
 
@@ -329,6 +356,7 @@ const ParticularsFormSection: React.FC<DataProps> = ({ form }) => {
   );
 };
 export default () => {
+  const actionRef = useRef<ProDescriptionsActionType>();
   const [form] = ProForm.useForm();
   const [state, setState] = useState<FormStateTypes>({
     ...INITIAL_FORM_VALUES,
@@ -352,6 +380,9 @@ export default () => {
               console.log(changedValue);
             }}
             requiredMark="optional"
+            onReset={(e) => {
+              actionRef.current?.reload();
+            }}
             onFinish={async (values: FormStateTypes) => {
               setState((prevState) => ({
                 ...prevState,
@@ -410,7 +441,7 @@ export default () => {
               <SupplyInfoFormSection form={form} />
             </Card>
             <Card title="Rent Info">
-              <RentInfoFormSection form={form} data={state} />
+              <RentInfoFormSection form={form} data={state} actionRef={actionRef} />
             </Card>
             <Card title="Particulars">
               <ParticularsFormSection form={form} />
