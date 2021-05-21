@@ -15,6 +15,7 @@ import { INITIAL_TEST_FORM_VALUES } from '../../constants/InitialValues';
 import moment from 'moment';
 import styles from './ProCreateInvoice.less';
 import { stateData } from './data/state-city';
+import Title from 'antd/lib/typography/Title';
 const { Text } = Typography;
 
 const cityData = stateData;
@@ -32,7 +33,7 @@ const InvoiceInfoFormSection: React.FC = () => {
   const dateFormat = 'DD/MM/YYYY';
   return (
     <>
-      <Row>
+      <Row justify="space-between">
         <ProFormText
           rules={[{ required: true }]}
           name="invoice_no"
@@ -106,6 +107,24 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, form }) => {
           label="Postal/Zip Code"
           placeholder="enter postal/zip"
         />
+        <Col span={1}></Col>
+
+        {prefix == 'bf' ? (
+          <ProFormText
+            rules={[
+              {
+                required: true,
+                pattern: new RegExp('[A-Z]{5}[0-9]{4}[A-Z]{1}'),
+                message: 'Not a valid PAN',
+              },
+            ]}
+            name="pan"
+            label="PAN"
+            placeholder="enter PAN here"
+            normalize={(value) => (value || '').toUpperCase()}
+            readonly
+          />
+        ) : null}
       </Row>
     </>
   );
@@ -227,28 +246,6 @@ const RentInfoFormSection: React.FC<DataProps> = ({ form, data }) => {
             formatter: (value) => `₹ ${value}`,
             parser: (value) => value!.replace('₹ ', ''),
           }}
-        />
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              pattern: new RegExp('[A-Z]{5}[0-9]{4}[A-Z]{1}'),
-              message: 'Not a valid PAN',
-            },
-          ]}
-          name="pan"
-          label="PAN"
-          placeholder="enter PAN here"
-          normalize={(value) => (value || '').toUpperCase()}
-          readonly
-        />
-        <ProFormText
-          rules={[{ required: true }]}
-          name="sac"
-          label="SAC"
-          placeholder="enter SAC here"
-          normalize={(value) => (value || '').toUpperCase()}
-          readonly
         />
       </Row>
       {form.getFieldValue('taxable_amount') ? (
@@ -394,7 +391,7 @@ export default () => {
             }}
             initialValues={INITIAL_FORM_VALUES}
           >
-            <Card title="Invoice Info">
+            <Card title={<Title level={4}>Create Invoice</Title>} style={{ textAlign: 'center' }}>
               <InvoiceInfoFormSection />
             </Card>
             <Row>

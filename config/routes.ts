@@ -15,12 +15,6 @@
       },
     ],
   },
-  // {
-  //   path: '/welcome',
-  //   name: 'welcome',
-  //   icon: 'smile',
-  //   component: './Welcome',
-  // },
   {
     path: '/create-invoice-pro',
     name: 'create-invoice',
@@ -41,13 +35,6 @@
   //       component: './Welcome',
   //     },
   //   ],
-  // },
-
-  // {
-  //   path: '/create-invoice',
-  //   name: 'create-invoice',
-  //   icon: 'smile',
-  //   component: './CreateInvoice/CreateInvoice',
   // },
   {
     path: '/',
