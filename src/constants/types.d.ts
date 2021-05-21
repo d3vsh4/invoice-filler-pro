@@ -17,13 +17,13 @@ type FormStateTypes = {
   s_zip: number | string;
   rent_type: 'variable' | 'fixed' | string;
   invoice_no: string;
-  invoice_date?: string;
+  invoice_date: string | any;
   area: number;
   unit: 'sq. ft.' | string;
   pan: string;
   sac: number;
-  p_head?: string;
-  p_content?: string;
+  p_head: string;
+  p_content: string;
   p_note?: string;
   taxable_amount: number;
   per_rate: number;
@@ -32,9 +32,10 @@ type FormStateTypes = {
   isFormValid: boolean;
   taxed_amount: number;
   tax_amount: number;
-  isIGST: boolean;
+  isSameState: boolean;
   amount_in_words: string;
 };
+type HelperStateType = {};
 type AddressProps = {
   prefix: string;
 };
@@ -42,5 +43,4 @@ type DataProps = {
   form?: FormInstance<FormStateTypes>;
   data?: FormStateTypes;
   prefix?: string;
-  actionRef?: React.MutableRefObject<ProDescriptionsActionType | undefined>;
 };

@@ -1,3 +1,6 @@
+import moment from 'moment';
+const dateFormat = 'DD/MM/YYYY';
+
 export const INITIAL_FORM_VALUES = {
   bf_name: 'NATHMAL SHARMA',
   bf_gstin: '18AIKPS1729A6Z6',
@@ -16,9 +19,10 @@ export const INITIAL_FORM_VALUES = {
   s_state: '',
   s_zip: '',
   rent_type: 'variable',
+  invoice_no: '0001',
+  invoice_date: moment(moment().toDate(), dateFormat),
   area: 0.0,
   unit: 'sq. ft.',
-  invoice_no: '0001',
   pan: 'AIKPS1729A',
   sac: 997212,
   p_head: 'Renting of immovable property Service',
@@ -31,7 +35,7 @@ export const INITIAL_FORM_VALUES = {
   isFormValid: false,
   taxed_amount: 0.0,
   tax_amount: 0.0,
-  isIGST: false,
+  isSameState: false,
   amount_in_words: 'zero',
 };
 
@@ -53,9 +57,10 @@ export const INITIAL_TEST_FORM_VALUES = {
   s_state: 'Assam',
   s_zip: 781035,
   rent_type: 'variable',
+  invoice_no: '0001',
+  invoice_date: moment(moment().toDate(), dateFormat).toString(),
   area: 0.0,
   unit: 'sq. ft.',
-  invoice_no: '0001',
   pan: 'AIKPS1729A',
   sac: 997212,
   p_head: 'Renting of Immovable Property Service',
@@ -68,6 +73,6 @@ export const INITIAL_TEST_FORM_VALUES = {
   isFormValid: false,
   taxed_amount: 0.0,
   tax_amount: 0.0,
-  isIGST: false,
+  isSameState: false,
   amount_in_words: 'zero',
 };

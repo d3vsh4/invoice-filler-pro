@@ -20,7 +20,7 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
       try {
         // const [taxable_amount, bt_state, bf_state] = props.data;
         const toChange = {
-          isIGST: false,
+          isSameState: false,
           tax_amount: 0,
           taxable_amount: 0,
           taxed_amount: 0,
@@ -28,7 +28,7 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
         };
 
         if (props.data.bt_state == props.data.bf_state) {
-          toChange.isIGST = true;
+          toChange.isSameState = true;
         }
         toChange.taxable_amount = Math.round(props.data.taxable_amount);
         toChange.tax_amount = Math.round((toChange.taxable_amount * 18) / 100);

@@ -76,7 +76,7 @@ const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
 
         <Descriptions.Item span={4} label={<Text strong>APPLIED TAX TYPE</Text>}>
           <span style={{ color: 'red' }}>
-            {data.isIGST ? (
+            {data.isSameState ? (
               'IGST @ 18%'
             ) : (
               <div>
@@ -88,7 +88,7 @@ const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
           </span>
         </Descriptions.Item>
         <Descriptions.Item label={<Text strong>TAX VALUE</Text>}>
-          {data.isIGST ? (
+          {data.isSameState ? (
             data.tax_amount
           ) : (
             <span style={{ color: 'red' }}>
