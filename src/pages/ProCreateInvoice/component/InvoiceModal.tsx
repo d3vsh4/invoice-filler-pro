@@ -22,6 +22,7 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
         const toChange = {
           isIGST: false,
           tax_amount: 0,
+          taxable_amount: 0,
           taxed_amount: 0,
           amount_in_words: '',
         };
@@ -29,10 +30,9 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
         if (props.data.bt_state == props.data.bf_state) {
           toChange.isIGST = true;
         }
-        toChange.tax_amount = toChange.isIGST
-          ? Math.ceil((props.data.taxable_amount * 18) / 100)
-          : 2 * Math.ceil((props.data.taxable_amount * 9) / 100);
-        toChange.taxed_amount = Math.ceil(props.data.taxable_amount) + toChange.tax_amount;
+        toChange.taxable_amount = Math.round(props.data.taxable_amount);
+        toChange.tax_amount = Math.round((toChange.taxable_amount * 18) / 100);
+        toChange.taxed_amount = toChange.taxable_amount + toChange.tax_amount;
         toChange.amount_in_words = convertRupeeToWords(`${toChange.taxed_amount}`);
         props.setData((prevData) => ({
           ...prevData,
