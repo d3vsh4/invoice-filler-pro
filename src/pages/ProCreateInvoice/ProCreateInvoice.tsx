@@ -38,8 +38,7 @@ export default () => {
           <ProForm
             form={form}
             onValuesChange={(changedValue, allFields) => {
-              console.log(form.getFieldsValue(), allFields);
-
+              // console.log(form.getFieldsValue(), allFields);
               setFormState((prevState) => ({
                 ...prevState,
                 ...allFields,
@@ -69,10 +68,11 @@ export default () => {
               searchConfig: {
                 submitText: 'Submit',
               },
-              render: (_, dom) => (
+              render: (props, dom) => (
                 <>
                   <InvoiceModal
                     setData={setFormState}
+                    formRef={props.form}
                     data={formState}
                     children={dom.pop()}
                     checkInputForm={checkForm}

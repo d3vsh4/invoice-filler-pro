@@ -4,9 +4,11 @@ import GenPrint from '@/components/common/GenPrint';
 import ButtonGroup from 'antd/es/button/button-group';
 import InvoiceSlip from '@/pages/components/InvoiceSlip';
 import { convertRupeeToWords } from '@/utils/utils';
+import { FormInstance } from 'antd/es/form/Form';
 
 type InvoiceModal = {
   setData: React.Dispatch<React.SetStateAction<FormStateTypes>>;
+  formRef?: FormInstance;
   data: FormStateTypes;
   children: Element[] | React.ReactNode;
   checkInputForm: any;
@@ -30,7 +32,7 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
         if (props.data.bt_state == props.data.bf_state) {
           toChange.isSameState = true;
         }
-        toChange.taxable_amount = Math.round(props.data.taxable_amount);
+        toChange.taxable_amount = Math.round(props.formRef?.getFieldValue('taxable_amount'));
         toChange.tax_amount = Math.round((toChange.taxable_amount * 18) / 100);
         toChange.taxed_amount = toChange.taxable_amount + toChange.tax_amount;
         toChange.amount_in_words = convertRupeeToWords(`${toChange.taxed_amount}`);
@@ -47,6 +49,12 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
   };
 
   const showModal = async () => {
+    // console.log(props.data);
+    // props.setData((prevData) => ({
+    //   ...prevData,
+    //   ...props.formRef?.getFieldsValue(),
+    //   invoice_date: props.formRef?.getFieldValue('invoice_date').format('DD/MM/YYYY'),
+    // }));
     if (await props.checkInputForm()) {
       if (await calculateData()) {
         setVisible(true);
