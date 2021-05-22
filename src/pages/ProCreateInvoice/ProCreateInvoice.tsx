@@ -5,7 +5,7 @@ import InvoiceModal from './component/InvoiceModal';
 import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
 import { INITIAL_TEST_FORM_VALUES } from '../../constants/InitialValues';
 import Title from 'antd/lib/typography/Title';
-import { ProCreateInvoiceContext } from './context/ProCreateInvoiceContext';
+import { CreateFormContext } from './context/CreateFormContext';
 import CompanyFormSection from './component/CompanySection';
 import InvoiceInfoFormSection from './component/InvoiceSection';
 import ParticularsFormSection from './component/ParticularsSection';
@@ -26,41 +26,30 @@ export default () => {
   const [formState, setFormState] = useState<FormStateTypes>({
     ...INITIAL_FORM_VALUES,
   });
-  const checkForm = async () =>
-    await form
-      .validateFields()
-      .then((val) => true)
-      .catch((_) => false);
+  const [formHelpers, setFormHelpers] = useState({
+    isFormSubmitting: false,
+  });
   return (
     <>
       <Row justify="center">
         <Col span={24}>
           <ProForm
             form={form}
-            onValuesChange={(changedValue, allFields) => {
-              console.log(form.getFieldsValue(), allFields);
-
-              setFormState((prevState) => ({
-                ...prevState,
-                ...allFields,
-              }));
-              console.log(changedValue);
-            }}
             requiredMark="optional"
             onReset={(e) => {
               setFormState(INITIAL_FORM_VALUES);
             }}
             onFinish={async (values: FormStateTypes) => {
-              setFormState((prevState) => ({
-                ...prevState,
-                isSubmitting: true,
-              }));
+              // setFormState((prevState) => ({
+              //   ...prevState,
+              //   isSubmitting: true,
+              // }));
               await waitTime(100);
-              setFormState((prevState) => ({
-                ...prevState,
-                isSubmitting: true,
-                submited: true,
-              }));
+              // setFormState((prevState) => ({
+              //   ...prevState,
+              //   isSubmitting: false,
+              //   submited: true,
+              // }));
               // await createInvoice({ ...values });
               console.log(values);
               message.success('Submitted successfully');
@@ -69,14 +58,17 @@ export default () => {
               searchConfig: {
                 submitText: 'Submit',
               },
-              render: (_, dom) => (
+              render: (props, dom) => (
                 <>
-                  <InvoiceModal
-                    setData={setFormState}
-                    data={formState}
-                    children={dom.pop()}
-                    checkInputForm={checkForm}
-                  />
+                  <CreateFormContext.Provider
+                    value={{
+                      formRef: props.form,
+                      formStateHook: { formState, setFormState },
+                      forHelpersHook: { formHelpers, setFormHelpers },
+                    }}
+                  >
+                    <InvoiceModal children={dom.pop()} />
+                  </CreateFormContext.Provider>
                   {dom}
                 </>
               ),
@@ -89,7 +81,7 @@ export default () => {
             }}
             initialValues={INITIAL_FORM_VALUES}
           >
-            <ProCreateInvoiceContext.Provider value={{ formRef: form }}>
+            <CreateFormContext.Provider value={{ formRef: form }}>
               <Card title={<Title level={4}>Create Invoice</Title>} style={{ textAlign: 'center' }}>
                 <InvoiceInfoFormSection />
               </Card>
@@ -109,12 +101,12 @@ export default () => {
                 <SupplyInfoFormSection />
               </Card>
               <Card title="Rent Info">
-                <RentInfoFormSection data={formState} />
+                <RentInfoFormSection />
               </Card>
               <Card title="Particulars">
                 <ParticularsFormSection />
               </Card>
-            </ProCreateInvoiceContext.Provider>
+            </CreateFormContext.Provider>
           </ProForm>
         </Col>
       </Row>

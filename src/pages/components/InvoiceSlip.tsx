@@ -1,10 +1,12 @@
 import { Col, Descriptions, Divider, Row, Space, Typography } from 'antd';
-import React from 'react';
+import React, { useContext } from 'react';
+import { CreateFormContext } from '../ProCreateInvoice/context/CreateFormContext';
 const { Text, Title } = Typography;
 type InvoiceSlipInputType = {
   data: FormStateTypes;
 };
 const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
+  // const { formStateHook } = useContext(CreateFormContext);
   return (
     <div style={{ minWidth: '872px' }}>
       <Descriptions

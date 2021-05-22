@@ -27,9 +27,6 @@ type FormStateTypes = {
   p_note?: string;
   taxable_amount: number;
   per_rate: number;
-  isSubmitting: boolean;
-  submitted: boolean;
-  isFormValid: boolean;
   taxed_amount: number;
   tax_amount: number;
   isSameState: boolean;

@@ -4,17 +4,16 @@ import GenPrint from '@/components/common/GenPrint';
 import ButtonGroup from 'antd/es/button/button-group';
 import InvoiceSlip from '@/pages/components/InvoiceSlip';
 import { convertRupeeToWords } from '@/utils/utils';
+import { useContext } from 'react';
+import { CreateFormContext } from '../context/CreateFormContext';
 
 type InvoiceModal = {
-  setData: React.Dispatch<React.SetStateAction<FormStateTypes>>;
-  data: FormStateTypes;
   children: Element[] | React.ReactNode;
-  checkInputForm: any;
 };
 const InvoiceModal: React.FC<InvoiceModal> = (props) => {
   const [visible, setVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
-
+  const { formRef, formStateHook } = useContext(CreateFormContext);
   const calculateData = () => {
     return new Promise((resolve, reject) => {
       try {
@@ -27,14 +26,14 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
           amount_in_words: '',
         };
 
-        if (props.data.bt_state == props.data.bf_state) {
+        if (formStateHook?.formState.bt_state == formStateHook?.formState.bf_state) {
           toChange.isSameState = true;
         }
-        toChange.taxable_amount = Math.round(props.data.taxable_amount);
+        toChange.taxable_amount = Math.round(formStateHook?.formState.taxable_amount!);
         toChange.tax_amount = Math.round((toChange.taxable_amount * 18) / 100);
         toChange.taxed_amount = toChange.taxable_amount + toChange.tax_amount;
         toChange.amount_in_words = convertRupeeToWords(`${toChange.taxed_amount}`);
-        props.setData((prevData) => ({
+        formStateHook?.setFormState((prevData) => ({
           ...prevData,
           ...toChange,
         }));
@@ -47,7 +46,17 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
   };
 
   const showModal = async () => {
-    if (await props.checkInputForm()) {
+    if (
+      await formRef
+        ?.validateFields()
+        .then((v) => true)
+        .catch((_) => false)
+    ) {
+      formStateHook?.setFormState((prevState) => ({
+        ...prevState,
+        ...formRef?.getFieldsValue(),
+        invoice_date: formRef?.getFieldValue('invoice_date').format('DD/MM/YYYY'),
+      }));
       if (await calculateData()) {
         setVisible(true);
       }
@@ -101,7 +110,7 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
         ]}
       >
         <GenPrint>
-          <InvoiceSlip data={props.data} />
+          <InvoiceSlip data={formStateHook?.formState!} />
         </GenPrint>
       </Modal>
     </>

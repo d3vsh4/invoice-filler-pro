@@ -3,16 +3,19 @@ import { Col, Row } from 'antd';
 import { ProFormSelect, ProFormDigit } from '@ant-design/pro-form';
 import { useState, useContext } from 'react';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { ProCreateInvoiceContext } from '../context/ProCreateInvoiceContext';
+import { CreateFormContext } from '../context/CreateFormContext';
 
-const RentInfoFormSection: React.FC<DataProps> = ({ data }) => {
-  const { formRef } = useContext(ProCreateInvoiceContext);
+const RentInfoFormSection: React.FC = () => {
+  const { formRef } = useContext(CreateFormContext);
+
   const helper = {
     rentType: formRef?.getFieldValue('rent_type'),
     taxAmount: Math.round((formRef?.getFieldValue('taxable_amount') * 18) / 100),
     taxableAmount: formRef?.getFieldValue('taxable_amount'),
     isSameState: formRef?.getFieldValue('bf_state') === formRef?.getFieldValue('bt_state'),
   };
+  const [rerender, setRerender] = useState(true);
+
   const setTaxableAmountField = () => {
     if (helper.rentType != 'fixed') {
       const taxable_amount = Math.round(
@@ -22,6 +25,7 @@ const RentInfoFormSection: React.FC<DataProps> = ({ data }) => {
         taxable_amount: taxable_amount,
       });
     }
+    setRerender(!rerender);
   };
   return (
     <Row>
@@ -46,6 +50,7 @@ const RentInfoFormSection: React.FC<DataProps> = ({ data }) => {
               v == 'fixed'
                 ? formRef?.setFieldsValue({ taxable_amount: 0 })
                 : formRef?.setFieldsValue({ taxable_amount: 0, area: 0, per_rate: 0 });
+              setRerender(!rerender);
             },
           }}
         />
@@ -81,6 +86,7 @@ const RentInfoFormSection: React.FC<DataProps> = ({ data }) => {
           fieldProps={{
             formatter: (value) => `₹ ${value}`,
             parser: (value) => value!.replace('₹ ', ''),
+            onChange: (_) => setRerender(!rerender),
           }}
         />
       </Col>

@@ -3,13 +3,13 @@ import { Col, Row } from 'antd';
 import { ProFormSelect, ProFormDigit, ProFormText } from '@ant-design/pro-form';
 import { useContext } from 'react';
 import { stateData } from '../data/state-city';
-import { ProCreateInvoiceContext } from '../context/ProCreateInvoiceContext';
+import { CreateFormContext } from '../context/CreateFormContext';
 const cityData = stateData;
 const states = Object.keys(cityData);
 
 const AdressFormSection: React.FC<DataProps> = ({ prefix }) => {
   const [cities, setCities] = React.useState(cityData[states[3]]);
-  const { formRef } = useContext(ProCreateInvoiceContext);
+  const { formRef } = useContext(CreateFormContext);
 
   const handleStateChange = (value: string) => {
     setCities(cityData[value]);
