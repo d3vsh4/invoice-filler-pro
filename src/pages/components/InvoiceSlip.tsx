@@ -64,8 +64,8 @@ const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
             <></>
           )}
         </Descriptions.Item>
-        <Descriptions.Item label={<Text strong>AREA ({data.unit})</Text>}>
-          <Text>{`${data.area}`.toUpperCase()}</Text>
+        <Descriptions.Item label={<Text strong>AREA ({data.unit.toUpperCase()})</Text>}>
+          <Text>{`${data.area}`}</Text>
         </Descriptions.Item>
         <Descriptions.Item label={<Text strong>RATE/ {data.unit.toUpperCase()}</Text>}>
           <Text>₹ {data.per_rate}</Text>
