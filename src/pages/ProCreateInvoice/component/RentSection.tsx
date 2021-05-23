@@ -40,6 +40,7 @@ const RentInfoFormSection: React.FC<DataProps> = ({ data }) => {
         placeholder="please select rent type"
         name="rent_type"
         label="Rent Type"
+        allowClear={false}
         fieldProps={{
           onChange: (v) => {
             v == 'fixed'
@@ -68,9 +69,10 @@ const RentInfoFormSection: React.FC<DataProps> = ({ data }) => {
         disabled={helper.rentType == 'fixed' ? true : false}
         fieldProps={{
           step: '0.001',
-          formatter: (value) => `₹ ${value}`,
+          formatter: (value) =>
+            `₹ ${value}`.replace(/\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g, ',') + '.00',
+          parser: (value) => value!.replace(/\₹\s?|(,*)/g, ''),
           onChange: setTaxableAmountField,
-          parser: (value) => value!.replace('₹ ', ''),
         }}
       />
       <Col span={1} />
@@ -79,10 +81,15 @@ const RentInfoFormSection: React.FC<DataProps> = ({ data }) => {
         label="Taxable Amount :"
         name="taxable_amount"
         placeholder="taxable amount"
-        readonly={helper.rentType == 'variable' ? true : false}
+        // readonly={helper.rentType == 'variable' ? true : false}
         fieldProps={{
-          formatter: (value) => `₹ `,
-          parser: (value) => value!.replace('₹ ', ''),
+          readOnly: helper.rentType == 'variable' ? true : false,
+          step: '0.01',
+          formatter: (value) =>
+            `₹ ${value}`.replace(/\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g, ',') + '.00',
+          parser: (value) => value!.replace(/\₹\s?|(,*)/g, ''),
+          // formatter: (value) => `₹ `,
+          // parser: (value) => value!.replace('₹ ', ''),
         }}
         help={
           <div
@@ -96,29 +103,55 @@ const RentInfoFormSection: React.FC<DataProps> = ({ data }) => {
           >
             {!isSameState ? (
               <div>
-                IGST @ 18%: <span style={{ color: 'red' }}>{`+ ₹ ${helper.taxAmount}`}</span>
+                IGST @ 18%:{' '}
+                <span style={{ color: 'red' }}>
+                  {`+ ₹ ${helper.taxAmount}`.replace(/\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g, ',') +
+                    '.00'}
+                </span>
               </div>
             ) : (
               <div>
-                CGST @ 9%: <span style={{ color: 'red' }}>{`+ ₹ ${helper.taxAmount / 2}`}</span>
+                CGST @ 9%:{' '}
+                <span style={{ color: 'red' }}>
+                  {`+ ₹ ${helper.taxAmount / 2}`.replace(
+                    /\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g,
+                    ',',
+                  ) + '.00'}
+                </span>
                 <br />
-                SGST @ 9%: <span style={{ color: 'red' }}>{`+ ₹ ${helper.taxAmount / 2}`}</span>
+                SGST @ 9%:{' '}
+                <span style={{ color: 'red' }}>
+                  {`+ ₹ ${helper.taxAmount / 2}`.replace(
+                    /\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g,
+                    ',',
+                  ) + '.00'}
+                </span>
               </div>
             )}
             <Divider style={{ margin: '6px' }} />
             <div>
-              Total tax: <span style={{ color: 'red' }}>{`₹ ${helper.taxAmount}`}</span>
+              Total tax:{' '}
+              <span style={{ color: 'red' }}>
+                {`₹ ${helper.taxAmount}`.replace(/\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g, ',') +
+                  '.00'}
+              </span>
             </div>
             <div>
               Total taxable amount:{' '}
-              <span style={{ color: 'red' }}>{`+ ₹ ${helper.taxableAmount}`}</span>
+              <span style={{ color: 'red' }}>
+                {`+ ₹ ${helper.taxableAmount}`.replace(/\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g, ',') +
+                  '.00'}
+              </span>
             </div>
             <Divider style={{ margin: '6px' }} />
             <div>
               Payabal amount:{' '}
-              <span style={{ color: 'green' }}>{`₹ ${
-                helper.taxAmount + helper.taxableAmount
-              }`}</span>
+              <span style={{ color: 'green' }}>
+                {`₹ ${helper.taxAmount + helper.taxableAmount}`.replace(
+                  /\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g,
+                  ',',
+                )}
+              </span>
             </div>
           </div>
         }
