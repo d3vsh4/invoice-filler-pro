@@ -2,11 +2,11 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 发送验证码 POST /api/login/captcha */
+/** Send the verification code POST /api/login/captcha */
 export async function getFakeCaptcha(
   params: {
     // query
-    /** 手机号 */
+    /** phone number */
     phone?: string;
   },
   options?: { [key: string]: any },

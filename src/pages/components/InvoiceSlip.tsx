@@ -65,9 +65,9 @@ const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
           )}
         </Descriptions.Item>
         <Descriptions.Item label={<Text strong>AREA ({data.unit})</Text>}>
-          <Text>{`${data.area}`}</Text>
+          <Text>{`${data.area}`.toUpperCase()}</Text>
         </Descriptions.Item>
-        <Descriptions.Item label={<Text strong>RATE/ {data.unit}</Text>}>
+        <Descriptions.Item label={<Text strong>RATE/ {data.unit.toUpperCase()}</Text>}>
           <Text>₹ {data.per_rate}</Text>
         </Descriptions.Item>
         <Descriptions.Item span={2} label={<Text strong>TAXABLE AMOUNT</Text>}>
@@ -76,7 +76,7 @@ const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
 
         <Descriptions.Item span={4} label={<Text strong>APPLIED TAX TYPE</Text>}>
           <span style={{ color: 'red' }}>
-            {data.isSameState ? (
+            {!data.isSameState ? (
               'IGST @ 18%'
             ) : (
               <div>
@@ -88,7 +88,7 @@ const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
           </span>
         </Descriptions.Item>
         <Descriptions.Item label={<Text strong>TAX VALUE</Text>}>
-          {data.isSameState ? (
+          {!data.isSameState ? (
             data.tax_amount
           ) : (
             <span style={{ color: 'red' }}>

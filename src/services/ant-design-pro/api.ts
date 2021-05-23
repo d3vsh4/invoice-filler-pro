@@ -1,11 +1,10 @@
 // @ts-ignore
 /* eslint-disable */
-import { BASE_URL } from '@/constants';
 import { request } from 'umi';
 
 /**Get current users GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<API.CurrentUser>(`${BASE_URL}/api/currentUser`, {
+  return request<API.CurrentUser>(`/api/currentUser`, {
     method: 'GET',
     ...(options || {}),
   });
@@ -13,7 +12,7 @@ export async function currentUser(options?: { [key: string]: any }) {
 
 /**Exit login interface POST /api/login/outLogin */
 export async function outLogin(options?: { [key: string]: any }) {
-  return request<Record<string, any>>(`${BASE_URL}/api/login/outLogin`, {
+  return request<Record<string, any>>(`/api/login/outLogin`, {
     method: 'POST',
     ...(options || {}),
   });
@@ -21,7 +20,7 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /**Login interface POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>(`${BASE_URL}/api/login/account`, {
+  return request<API.LoginResult>(`/api/login/account`, {
     method: 'POST',
     // headers: {
     //   'Content-Type': 'application/json',

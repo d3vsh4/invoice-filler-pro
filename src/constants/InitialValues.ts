@@ -26,7 +26,7 @@ export const INITIAL_FORM_VALUES = {
   pan: 'AIKPS1729A',
   sac: 997212,
   p_head: 'Renting of immovable property Service',
-  p_content: `Towards the Rent on Immovable Property for the period of MAY 2021 in Respect of Warehouse RCC Building Ground ,1st & 2nd Floor, Situated at PAMOHI ROAD, MAGHAWA PARA, GORCHUK, GUWAHATI - 781 035 (ASSAM)`,
+  p_content: `Towards the rent on immovable property for the period of MAY 2021 in respect of warehouse RCC building ground ,1st & 2nd Floor, Situated at PAMOHI ROAD, MAGHAWA PARA, GORCHUK, GUWAHATI - 781 035 (ASSAM)`,
   p_note: '',
   taxable_amount: 0.0,
   per_rate: 0.0,

@@ -1,9 +1,10 @@
 import React from 'react';
 import { ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { Col } from 'antd';
 
 const ParticularsFormSection: React.FC = () => {
   return (
-    <>
+    <Col span={12}>
       <ProFormText
         rules={[{ required: true }]}
         name="p_head"
@@ -24,7 +25,7 @@ const ParticularsFormSection: React.FC = () => {
         // width="xl"
         placeholder="write note here"
       />
-    </>
+    </Col>
   );
 };
 
