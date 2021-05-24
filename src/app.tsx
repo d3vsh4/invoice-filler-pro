@@ -1,6 +1,6 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import { notification } from 'antd';
+import { Button, notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { getIntl, getLocale, history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import type { ResponseError } from 'umi-request';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import { useState } from 'react';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -100,9 +101,16 @@ export const request: RequestConfig = {
 
 // ProLayout Supported API https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
+  // const [collapsed, setCollapsed] = useState(false);
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
+    // defaultCollapsed: true,
+    // collapsed: true,
+    // collapsedButtonRender: (collapsed) => {
+    //   this!.collapsed = false;
+    //   return <Button />;
+    // },
     // waterMarkProps: {
     //   content: initialState?.currentUser?.name,
     // },

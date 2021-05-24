@@ -2,7 +2,7 @@ import { Button, Modal, Space } from 'antd';
 import React from 'react';
 import GenPrint from '@/components/common/GenPrint';
 import ButtonGroup from 'antd/es/button/button-group';
-import InvoiceSlip from '@/pages/components/InvoiceSlip';
+import InvoiceSlip from '@/components/common/InvoiceSlip';
 import { convertRupeeToWords } from '@/utils/utils';
 import { FormInstance } from 'antd/es/form/Form';
 
@@ -27,11 +27,14 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
           taxable_amount: 0,
           taxed_amount: 0,
           amount_in_words: '',
+          per_rate: 0,
         };
 
         if (props.data.bt_state == props.data.bf_state) {
           toChange.isSameState = true;
         }
+        toChange.per_rate =
+          Math.round((props.formRef?.getFieldValue('per_rate') + Number.EPSILON) * 1000) / 1000;
         toChange.taxable_amount = Math.round(props.formRef?.getFieldValue('taxable_amount'));
         toChange.tax_amount = Math.round((toChange.taxable_amount * 18) / 100);
         toChange.taxed_amount = toChange.taxable_amount + toChange.tax_amount;

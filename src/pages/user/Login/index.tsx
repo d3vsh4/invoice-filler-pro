@@ -94,12 +94,12 @@ const Login: React.FC = () => {
           <div className={styles.header}>
             <Link to="/">
               <img alt="logo" className={styles.logo} src="/XKG.svg" />
-              <span className={styles.title}>Form Filler Pro</span>
+              <span className={styles.title}>Invoice Filler Pro</span>
             </Link>
           </div>
           <div className={styles.desc}>
-            {/* {intl.formatMessage({ id: 'pages.layouts.userLayout.title' })} */}
-            {/* {intl.formatMessage({ id: 'pages.layouts.userLayout.title' })} */}
+            {intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
+            {intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
           </div>
         </div>
 

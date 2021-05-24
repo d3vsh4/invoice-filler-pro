@@ -19,26 +19,40 @@
     path: '/create-invoice-pro',
     name: 'create-invoice',
     icon: 'smile',
-    component: './ProCreateInvoice/ProCreateInvoice',
+    routes: [
+      {
+        path: '/create-invoice-pro/create',
+        name: 'create',
+        icon: 'smile',
+        component: './InvoiceForm/InvoiceForm',
+      },
+      {
+        path: '/create-invoice-pro/settings',
+        name: 'settings',
+        icon: 'setting',
+        component: './InvoiceForm/FormSettings',
+      },
+    ],
   },
   // {
   //   path: '/admin',
   //   name: 'admin',
   //   icon: 'crown',
   //   access: 'canAdmin',
-  //   component: './Admin',
+  //   component: './extras/Admin',
   //   routes: [
   //     {
   //       path: '/admin/sub-page',
   //       name: 'sub-page',
   //       icon: 'smile',
-  //       component: './Welcome',
+  //       component: './extras/Welcome',
   //     },
   //   ],
   // },
+
   {
     path: '/',
-    redirect: '/create-invoice-pro',
+    redirect: '/create-invoice-pro/create',
   },
   {
     component: './404',

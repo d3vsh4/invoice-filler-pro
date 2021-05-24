@@ -49,5 +49,7 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
-  'menu.create-invoice': 'Create Invoice'
+  'menu.create-invoice': 'Create Invoice',
+  'menu.create-invoice.create': 'Create',
+  'menu.create-invoice.settings': 'Settings',
 };

@@ -7,10 +7,11 @@ const Settings: LayoutSettings & {
   navTheme: 'light',
   // Dawn
   primaryColor: '#1890ff',
-  layout: 'top',
+  layout: 'mix',
   contentWidth: 'Fixed',
   fixedHeader: false,
   fixSiderbar: true,
+  splitMenus: true,
   colorWeak: false,
   title: 'Invoice Filler Pro',
   pwa: true,
