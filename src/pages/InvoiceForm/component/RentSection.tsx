@@ -124,11 +124,7 @@ const RentInfoFormSection: React.FC = () => {
         label="Rent Type"
         allowClear={false}
         fieldProps={{
-          onChange: (v) => {
-            v == 'fixed'
-              ? formRef?.setFieldsValue({ taxable_amount: 0 })
-              : formRef?.setFieldsValue({ taxable_amount: 0, area: 0, per_rate: 0 });
-          },
+          onChange: (v) => formRef?.setFieldsValue({ taxable_amount: 0, area: 0, per_rate: 0 }),
         }}
       />
       <Col span={1} />

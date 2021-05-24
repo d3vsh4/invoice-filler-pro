@@ -86,7 +86,7 @@ const InvoiceModal: React.FC<InvoiceModal> = (props) => {
         </Button>
       </ButtonGroup>
       <Modal
-        title="Tax Invoice"
+        // title="Tax Invoice"
         visible={visible}
         onOk={handleOk}
         confirmLoading={confirmLoading}
