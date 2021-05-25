@@ -3,7 +3,7 @@ import { Col, Row } from 'antd';
 import { ProFormText } from '@ant-design/pro-form';
 import AdressFormSection from './AddressSection';
 
-const CompanyFormSection: React.FC<DataProps> = ({ prefix }) => {
+const CompanyFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
   return (
     <Col>
       <Row>
@@ -15,6 +15,7 @@ const CompanyFormSection: React.FC<DataProps> = ({ prefix }) => {
             label="Company Name"
             placeholder="Please enter the name"
             normalize={(value) => (value || '').toUpperCase()}
+            fieldProps={{ readOnly: readonly }}
           />
         </Col>
         <Col span={1}></Col>
@@ -33,10 +34,11 @@ const CompanyFormSection: React.FC<DataProps> = ({ prefix }) => {
             name={prefix + '_gstin'}
             label="GSTIN"
             placeholder="Please enter the GSTIN no."
+            fieldProps={{ readOnly: readonly }}
           />
         </Col>
       </Row>
-      <AdressFormSection prefix={prefix} />
+      <AdressFormSection prefix={prefix} readonly={readonly} />
     </Col>
   );
 };

@@ -15,6 +15,7 @@ const SupplyInfoFormSection: React.FC<DataProps> = () => {
         s_city: formRef?.getFieldValue(prefix + '_city'),
         s_state: formRef?.getFieldValue(prefix + '_state'),
         s_zip: formRef?.getFieldValue(prefix + '_zip'),
+        s_addr_choice: null,
       });
     } catch (error) {
       console.log(error);

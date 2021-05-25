@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 const reg =
   /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -111,4 +113,28 @@ const helper = {
     }
     return '';
   },
+};
+
+export const getFiscalYear = () => {
+  if (moment().quarter() === 2) {
+    var thisFiscalStart = moment().month('April').startOf('month').format('YYYY-MM-DD');
+    var thisFiscalEnd = moment().add(1, 'year').month('March').endOf('month').format('YYYY-MM-DD');
+  } else {
+    var thisFiscalStart = moment()
+      .subtract(1, 'year')
+      .month('April')
+      .startOf('month')
+      .format('YYYY-MM-DD');
+    var thisFiscalEnd = moment().month('March').endOf('month').format('YYYY-MM-DD');
+  }
+  //in formate 21-22...
+  var year = thisFiscalStart.slice(2, 4) + '-' + thisFiscalEnd.slice(2, 4);
+  return year;
+};
+
+export const toFixDec = (num: number, p: number): number =>
+  Math.round((num + Number.EPSILON) * Math.pow(10, p)) / Math.pow(10, p);
+
+export const gst18 = (taxable_amount_in_float: number): number => {
+  return Math.round((Math.round(taxable_amount_in_float) * 18) / 100);
 };

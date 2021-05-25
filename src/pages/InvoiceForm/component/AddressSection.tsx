@@ -4,14 +4,17 @@ import { ProFormSelect, ProFormDigit, ProFormText } from '@ant-design/pro-form';
 import { useContext } from 'react';
 import { stateData } from './state-city';
 import { InvoiceFormContext } from './context/InvoiceFormContext';
+import { useModel } from 'umi';
 const cityData = stateData;
 const states = Object.keys(cityData);
 
-const AdressFormSection: React.FC<DataProps> = ({ prefix }) => {
+const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
   const [cities, setCities] = React.useState(cityData[states[3]]);
   const { formRef } = useContext(InvoiceFormContext);
 
+  const { increment } = useModel('counter');
   const handleStateChange = (value: string) => {
+    increment();
     setCities(cityData[value]);
     formRef?.setFieldsValue({ [prefix + '_city']: cityData[value][0] });
   };
@@ -23,6 +26,7 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix }) => {
         name={prefix + '_street'}
         label="Street Address"
         placeholder="Please enter the Street address"
+        fieldProps={{ readOnly: readonly }}
       />
       <Row>
         <ProFormSelect
@@ -30,6 +34,7 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix }) => {
           label="State"
           name={prefix + '_state'}
           showSearch
+          readonly={readonly}
           fieldProps={{ onChange: handleStateChange }}
           options={states.map((s: string) => ({ value: s, label: s }))}
           allowClear={false}
@@ -43,6 +48,7 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix }) => {
           name={prefix + '_city'}
           options={cities.map((city: string) => ({ value: city, label: city }))}
           allowClear={false}
+          readonly={readonly}
         />
         <Col span={1}></Col>
         <ProFormDigit
@@ -56,6 +62,7 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix }) => {
           name={prefix + '_zip'}
           label="Postal/Zip Code"
           placeholder="enter postal/zip"
+          fieldProps={{ readOnly: readonly }}
         />
         <Col span={1}></Col>
 

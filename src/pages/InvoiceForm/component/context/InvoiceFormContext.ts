@@ -1,4 +1,4 @@
-import { FormInstance } from 'antd/es/form/Form';
+import { FormInstance } from '@ant-design/pro-form';
 import { createContext } from 'react';
 
 type InvoiceFormContextTypes = {

@@ -1,6 +1,7 @@
 import { ProFormDatePicker, ProFormText } from '@ant-design/pro-form';
 import { Col, Row } from 'antd';
 import React from 'react';
+import TemplateSelector from './TemplateSelector';
 
 const InvoiceInfoFormSection: React.FC = () => {
   const dateFormat = 'DD/MM/YYYY';
@@ -20,6 +21,8 @@ const InvoiceInfoFormSection: React.FC = () => {
           label="Date"
           fieldProps={{ format: dateFormat }}
         />
+        <Col span={1}></Col>
+        <TemplateSelector />
       </Row>
     </>
   );

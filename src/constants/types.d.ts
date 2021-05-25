@@ -25,15 +25,21 @@ type FormStateTypes = {
   p_head: string;
   p_content: string;
   p_note?: string;
-  taxable_amount: number;
   per_rate: number;
   isSubmitting: boolean;
   submitted: boolean;
   isFormValid: boolean;
+  taxable_amount: number;
   taxed_amount: number;
   tax_amount: number;
   isSameState: boolean;
   amount_in_words: string;
+  t_name: string;
+  template_info: TemplateInfo;
+};
+type TemplateInfo = {
+  id: number;
+  name: string;
 };
 type HelperStateType = {};
 type AddressProps = {
@@ -43,4 +49,6 @@ type DataProps = {
   form?: FormInstance<FormStateTypes>;
   data?: FormStateTypes;
   prefix?: string;
+  disabled?: boolean;
+  readonly?: boolean;
 };

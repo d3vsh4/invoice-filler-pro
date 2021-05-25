@@ -1,4 +1,4 @@
-import { Card, Col, message, Row, Typography } from 'antd';
+import { Card, Col, message, Row, Typography, Button } from 'antd';
 import ProForm from '@ant-design/pro-form';
 import styles from './InvoiceForm.less';
 import { useState } from 'react';
@@ -31,6 +31,7 @@ export default () => {
   const [form] = ProForm.useForm();
   const { formState, setFormState }: MyFormData = useModel('form');
   const demo = useModel('demo');
+  const { increment } = useModel('counter'); //used to rerender this component
   const checkForm = async () =>
     await form
       .validateFields()
@@ -41,28 +42,28 @@ export default () => {
       <Col span={24}>
         <ProForm
           form={form}
-          onValuesChange={(changedValue, allFields) => {
-            setFormState((prevState) => ({
-              ...prevState,
-              ...allFields,
-            }));
-            console.log(changedValue);
-          }}
+          // onValuesChange={(changedValue, allFields) => {
+          //   setFormState((prevState) => ({
+          //     ...prevState,
+          //     ...changedValue,
+          //   }));
+          //   console.log(changedValue);
+          // }}
           requiredMark="optional"
           onReset={(e) => {
             setFormState(INITIAL_FORM_VALUES);
           }}
           onFinish={async (values: FormStateTypes) => {
-            setFormState((prevState) => ({
-              ...prevState,
-              isSubmitting: true,
-            }));
-            await waitTime(100);
-            setFormState((prevState) => ({
-              ...prevState,
-              isSubmitting: true,
-              submited: true,
-            }));
+            // setFormState((prevState) => ({
+            //   ...prevState,
+            //   isSubmitting: true,
+            // }));
+            // await waitTime(100);
+            // setFormState((prevState) => ({
+            //   ...prevState,
+            //   isSubmitting: true,
+            //   submited: true,
+            // }));
             // await createInvoice({ ...values });
             console.log(values);
             message.success('Submitted successfully');
@@ -81,6 +82,20 @@ export default () => {
                   checkInputForm={checkForm}
                 />
                 {dom}
+                <Button
+                  type="primary"
+                  ghost
+                  onClick={(e) => {
+                    form.setFieldsValue(INITIAL_TEST_FORM_VALUES);
+                    setFormState((prevData) => ({
+                      ...prevData,
+                      ...form.getFieldsValue(),
+                      invoice_date: form.getFieldValue('invoice_date').format('DD/MM/YYYY'),
+                    }));
+                  }}
+                >
+                  Fill Form
+                </Button>
               </>
             ),
             // submitButtonProps: {

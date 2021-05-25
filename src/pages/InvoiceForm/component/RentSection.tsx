@@ -6,30 +6,62 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import { InvoiceFormContext } from './context/InvoiceFormContext';
 import { useModel } from 'umi';
 import { MyFormData } from '@/models/types';
+import { gst18, toFixDec } from '@/utils/utils';
 
 const RentInfoFormSection: React.FC = () => {
   const { formRef } = useContext(InvoiceFormContext);
-  const { formState, setFormState }: MyFormData = useModel('form');
+  // const { formState, setFormState }: MyFormData = useModel('form');
+  // const { increment } = useModel('counter'); //used to rerender state form
+  const [rentType, setRentType] = useState('variable');
+  const [counter, setCounter] = useState(-50);
+
+  const handleAreaChange = (v: number | string) => {
+    v = parseFloat(`${v}`);
+    const taxable_amount = toFixDec(v, 2) * helper.perRate;
+    formRef?.setFieldsValue({
+      taxable_amount: taxable_amount,
+    });
+    setCounter(counter + 1);
+  };
+  const handleRateChange = (v: number | string) => {
+    console.log('changed');
+
+    v = parseFloat(`${v}`);
+    const taxable_amount = helper.area * toFixDec(v, 3);
+    formRef?.setFieldsValue({
+      taxable_amount: taxable_amount,
+    });
+    setCounter(counter + 1);
+  };
+  const handleTaxableAmountChange = (v: number | string) => {
+    v = parseFloat(`${v}`);
+    setCounter(counter + 1);
+  };
+
   const helper = {
-    rentType: formRef?.getFieldValue('rent_type'),
-    taxAmount: Math.round((formRef?.getFieldValue('taxable_amount') * 18) / 100),
+    perRate: toFixDec(formRef?.getFieldValue('per_rate'), 3), //3 dec
+    area: toFixDec(formRef?.getFieldValue('area'), 2), // 2 dec
+    taxAmount: gst18(formRef?.getFieldValue('taxable_amount')), //rounded off
     taxableAmount: Math.round(formRef?.getFieldValue('taxable_amount')),
     isSameState: formRef?.getFieldValue('bf_state') == formRef?.getFieldValue('bt_state'),
   };
-  const setTaxableAmountField = () => {
-    if (helper.rentType != 'fixed') {
-      const taxable_amount =
-        formRef?.getFieldValue('area') *
-        (Math.round((formRef?.getFieldValue('per_rate') + Number.EPSILON) * 1000) / 1000);
-      formRef?.setFieldsValue({
-        taxable_amount: taxable_amount,
-      });
-      // setFormState((prevState) => ({
-      //   ...prevState,
-      //   taxable_amount,
-      // }));
-    }
-  };
+  // const setTaxableAmountField = () => {
+  //   const taxable_amount = helper.area * helper.perRate;
+  //   if (rentType != 'fixed') {
+  //     formRef?.setFieldsValue({
+  //       taxable_amount: taxable_amount,
+  //     });
+  //     setTAmount(taxable_amount);
+  //   }
+  //   // const tax_amount = helper.taxAmount;
+  //   // setFormState((prevState) => ({
+  //   //   ...prevState,
+  //   //   // per_rate: per_rate,
+  //   //   // taxable_amount: taxable_amount,
+  //   //   tax_amount: tax_amount,
+  //   //   taxed_amount: tax_amount + Math.round(taxable_amount),
+  //   // }));
+  // };
   const HelpComp = () => (
     <table style={{ textAlign: 'right' }}>
       <tbody>
@@ -124,32 +156,37 @@ const RentInfoFormSection: React.FC = () => {
         label="Rent Type"
         allowClear={false}
         fieldProps={{
-          onChange: (v) => formRef?.setFieldsValue({ taxable_amount: 0, area: 0, per_rate: 0 }),
+          onChange: (v) => {
+            formRef?.setFieldsValue({ area: 0, per_rate: 0, taxable_amount: 0 });
+            setRentType(v);
+          },
         }}
       />
       <Col span={1} />
       <ProFormDigit
         rules={[{ required: true }]}
+        max={999999999999}
         label="Area Sq. Ft."
         name="area"
         placeholder="enter total area"
-        disabled={helper.rentType == 'fixed' ? true : false}
+        disabled={rentType == 'fixed' ? true : false}
         fieldProps={{
-          onChange: setTaxableAmountField,
+          onChange: handleAreaChange,
         }}
       />
       <Col span={1} />
       <ProFormDigit
         rules={[{ required: true }]}
+        max={999999999999}
         label="Rate/Unit"
         name="per_rate"
         placeholder="enter per unit price"
-        disabled={helper.rentType == 'fixed' ? true : false}
+        disabled={rentType == 'fixed' ? true : false}
         fieldProps={{
           step: '0.001',
           formatter: (value) => `₹ ${value}`,
           parser: (value) => value!.replace(/\₹\s?|(,*)/g, ''),
-          onChange: setTaxableAmountField,
+          onChange: handleRateChange,
         }}
       />
       <Col span={1} />
@@ -159,10 +196,11 @@ const RentInfoFormSection: React.FC = () => {
         name="taxable_amount"
         placeholder="taxable amount"
         fieldProps={{
-          readOnly: helper.rentType == 'variable' ? true : false,
+          readOnly: rentType == 'variable' ? true : false,
           step: '0.01',
           formatter: (value) => `₹ ${value}`,
           parser: (value) => value!.replace(/\₹\s?|(,*)/g, ''),
+          onChange: handleTaxableAmountChange,
         }}
         help={<HelpComp />}
       />
