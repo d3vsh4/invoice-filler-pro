@@ -1,3 +1,4 @@
+import { useModel } from '@/.umi/plugin-model/useModel';
 import { ProFormDatePicker, ProFormText } from '@ant-design/pro-form';
 import { Col, Row } from 'antd';
 import React from 'react';
@@ -5,6 +6,7 @@ import TemplateSelector from './TemplateSelector';
 
 const InvoiceInfoFormSection: React.FC = () => {
   const dateFormat = 'DD/MM/YYYY';
+
   return (
     <>
       <Row justify="space-between">
@@ -12,6 +14,7 @@ const InvoiceInfoFormSection: React.FC = () => {
           rules={[{ required: true }]}
           name="invoice_no"
           label="Invoice Number"
+          initialValue={"1"}
           placeholder="enter invoice number here"
         />
         <Col span={1}></Col>

@@ -1,4 +1,4 @@
-import { Col, Descriptions, Divider, Row, Space, Typography } from 'antd';
+import { Col, Descriptions, Divider, Row, Typography } from 'antd';
 import React from 'react';
 const { Text, Title } = Typography;
 const { Item } = Descriptions;
@@ -11,10 +11,7 @@ const InvoiceSlip: React.FC<InvoiceSlipInputType> = ({ data }) => {
       <Descriptions
         bordered
         style={{ minWidth: '900px' }}
-        // labelStyle={{ border: '5px solid red', backgroundColor: 'lightgreen' }}
-        // contentStyle={{ border: '5px solid blue', backgroundColor: 'lightpink' }}
         layout="vertical"
-        // style={{ minWidth: '872px' }}
         // column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         size="small"
         column={8}

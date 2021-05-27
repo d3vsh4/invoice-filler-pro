@@ -2,11 +2,11 @@ import { Card, Col, message, Row, Typography, Button } from 'antd';
 import ProForm from '@ant-design/pro-form';
 import styles from './InvoiceForm.less';
 import { useState } from 'react';
-import InvoiceModal from './component/InvoiceModal';
+import InvoiceModal from './component/MainSubmitModal';
 import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
 import { INITIAL_TEST_FORM_VALUES } from '../../constants/InitialValues';
 import Title from 'antd/lib/typography/Title';
-import { InvoiceFormContext } from './component/context/InvoiceFormContext';
+import { InvoiceFormContext } from './component/context/MainFormContext';
 import CompanyFormSection from './component/CompanySection';
 import InvoiceInfoFormSection from './component/InvoiceSection';
 import ParticularsFormSection from './component/ParticularsSection';
@@ -14,6 +14,9 @@ import RentInfoFormSection from './component/RentSection';
 import SupplyInfoFormSection from './component/SupplySection';
 import { useModel } from 'umi';
 import { MyFormData } from '@/models/types';
+import MainTable from './component/MainTable';
+import { getFiscalYear } from '@/utils/utils';
+import React from 'react';
 const { Text } = Typography;
 
 const waitTime = (time: number = 100) => {
@@ -23,15 +26,16 @@ const waitTime = (time: number = 100) => {
     }, time);
   });
 };
-type FormData = {
-  formState: FormStateTypes;
-  setFormState: React.Dispatch<React.SetStateAction<FormStateTypes>>;
-};
+
 export default () => {
   const [form] = ProForm.useForm();
+  const [visible, setVisible] = React.useState(false);
   const { formState, setFormState }: MyFormData = useModel('form');
+  const { formInvoices, setFormInvoices } = useModel('formInvoices');
+  // const { isEmpty, getLastID, addID } = useModel('formIdCounterDb')
+  // const [formState, setFormState] = useState<FormStateTypes>(INITIAL_FORM_VALUES);
   const demo = useModel('demo');
-  const { increment } = useModel('counter'); //used to rerender this component
+  const { } = useModel('counter'); //used to rerender this component evenunused
   const checkForm = async () =>
     await form
       .validateFields()
@@ -50,21 +54,25 @@ export default () => {
           //   console.log(changedValue);
           // }}
           requiredMark="optional"
-          onReset={(e) => {
+          onReset={async (e) => {
             setFormState(INITIAL_FORM_VALUES);
+            // var id = await getLastID()
+            // form.setFieldsValue({ 'invoice_no': (parseFloat(id) + 1).toString() })
           }}
           onFinish={async (values: FormStateTypes) => {
-            // setFormState((prevState) => ({
-            //   ...prevState,
-            //   isSubmitting: true,
-            // }));
-            // await waitTime(100);
-            // setFormState((prevState) => ({
-            //   ...prevState,
-            //   isSubmitting: true,
-            //   submited: true,
-            // }));
-            // await createInvoice({ ...values });
+            setFormInvoices((pv) => ({
+              ...pv,
+              [values.invoice_no ? values.invoice_no : "0001"]: {
+                ...formState,
+                ...values,
+              },
+            }));
+            // await addID();
+            setVisible(false);
+            setFormState(INITIAL_FORM_VALUES);
+            form.resetFields();
+            // var id = await getLastID()
+            // form.setFieldsValue({ 'invoice_no': (parseFloat(id) + 1).toString() })
             console.log(values);
             message.success('Submitted successfully');
           }}
@@ -76,6 +84,8 @@ export default () => {
               <>
                 <InvoiceModal
                   setData={setFormState}
+                  setVisible={setVisible}
+                  visible={visible}
                   formRef={props.form}
                   data={formState}
                   children={dom.pop()}
@@ -88,8 +98,7 @@ export default () => {
                   onClick={(e) => {
                     form.setFieldsValue(INITIAL_TEST_FORM_VALUES);
                     setFormState((prevData) => ({
-                      ...prevData,
-                      ...form.getFieldsValue(),
+                      ...INITIAL_TEST_FORM_VALUES,
                       invoice_date: form.getFieldValue('invoice_date').format('DD/MM/YYYY'),
                     }));
                   }}
@@ -134,6 +143,9 @@ export default () => {
             </Card>
           </InvoiceFormContext.Provider>
         </ProForm>
+      </Col>
+      <Col>
+        <MainTable />
       </Col>
     </Row>
   );

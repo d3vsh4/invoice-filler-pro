@@ -4,31 +4,12 @@ import { ModalForm, ProFormText } from '@ant-design/pro-form';
 import { Button, message, Row, Col, Card } from 'antd';
 import { useModel } from 'umi';
 import CompanyFormSection from './CompanySection';
-import { InvoiceFormContext } from './context/InvoiceFormContext';
+import { InvoiceFormContext } from './context/MainFormContext';
 import ParticularsFormSection from './ParticularsSection';
 import RentInfoFormSection from './RentSection';
 import SupplyInfoFormSection from './SupplySection';
 import { useReducer, useRef, useState } from 'react';
 import { FormInstance } from 'antd';
-
-type ActionType = {
-  type: string;
-  payload: Record<string, any>;
-};
-function submit(formData: FormStateTypes) {}
-function reducer(state: FormStateTypes, action: ActionType) {
-  switch (action.type) {
-    case 'SET FORM DATA':
-      return {
-        ...state,
-        ...action.payload,
-      };
-    case 'SUBMIT FORM':
-      return { ...state };
-    default:
-      throw new Error();
-  }
-}
 
 type PropsType = {
   initialValues: FormStateTypes;
@@ -37,18 +18,11 @@ type PropsType = {
 export default (props: PropsType) => {
   const { initialValues, edit } = props;
   const formRef = useRef<FormInstance>();
-  //   const [state, dispatch] = useReducer(reducer, initialValues);
   const [formState, setFormStates] = useState<FormStateTypes>(initialValues);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  // const { increment } = useModel('counter'); //used to rerender this component
   const { formTemplates, setFormTemplates } = useModel('formTemplates');
-  const waitTime = (time: number = 100) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, time);
-    });
-  };
+  // const { increment, counter } = useModel('counter'); //used to rerender this component even unused
+
   const setFormStatesIndirect = (values: any) => {
     setFormStates((pv) => ({
       ...pv,
@@ -65,10 +39,6 @@ export default (props: PropsType) => {
       [values.t_name]: {
         ...formState,
         ...values,
-        template_info: {
-          name: values.t_name,
-          id: new Date().getUTCMilliseconds(),
-        },
       },
     }));
   };
@@ -123,7 +93,7 @@ export default (props: PropsType) => {
                   name={'t_name'}
                   label="Template Name"
                   placeholder="Please enter the name"
-                  // readonly={edit}
+                // readonly={edit}
                 />
               </Card>
             </Col>

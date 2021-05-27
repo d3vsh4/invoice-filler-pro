@@ -1,7 +1,8 @@
+import formIdCounter from '@/models/counter';
 import { getFiscalYear } from '@/utils/utils';
 import moment from 'moment';
+import { useModel } from 'umi';
 const dateFormat = 'DD/MM/YYYY';
-
 export const INITIAL_FORM_VALUES = {
   bf_name: 'NATHMAL SHARMA',
   bf_gstin: '18AIKPS1729A6Z6',
@@ -20,7 +21,7 @@ export const INITIAL_FORM_VALUES = {
   s_state: '',
   s_zip: '',
   rent_type: 'variable',
-  invoice_no: getFiscalYear() + '/' + moment().unix().toString(),
+  // invoice_no: getFiscalYear() + '/0001',
   invoice_date: moment(moment().toDate(), dateFormat),
   area: 0.0,
   unit: 'sq. ft.',
@@ -30,19 +31,13 @@ export const INITIAL_FORM_VALUES = {
   p_content: '',
   p_note: '',
   per_rate: 0.0,
-  isSubmitting: false,
   submitted: false,
-  isFormValid: false,
   taxable_amount: 0.0,
   taxed_amount: 0.0,
   tax_amount: 0.0,
   isSameState: false,
   amount_in_words: 'zero',
   t_name: 'initial',
-  template_info: {
-    id: new Date().getUTCMilliseconds(),
-    name: 'initial',
-  },
 };
 
 export const INITIAL_TEST_FORM_VALUES = {
@@ -73,17 +68,11 @@ export const INITIAL_TEST_FORM_VALUES = {
   p_content: `Towards the rent on immovable property for the period of MAY 2021 in respect of warehouse RCC building ground ,1st & 2nd Floor, Situated at PAMOHI ROAD, MAGHAWA PARA, GORCHUK, GUWAHATI - 781 035 (ASSAM)`,
   p_note: '//write note here',
   per_rate: 10.5,
-  isSubmitting: false,
   submitted: false,
-  isFormValid: false,
   taxable_amount: 0.0,
   taxed_amount: 0.0,
   tax_amount: 0.0,
   isSameState: false,
   amount_in_words: 'zero',
   t_name: 'initial',
-  template_info: {
-    id: new Date().getUTCMilliseconds(),
-    name: 'initial',
-  },
 };

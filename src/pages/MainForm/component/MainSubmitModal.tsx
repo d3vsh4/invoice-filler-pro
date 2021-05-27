@@ -2,13 +2,16 @@ import { Button, Modal, Space } from 'antd';
 import React from 'react';
 import GenPrint from '@/components/common/GenPrint';
 import ButtonGroup from 'antd/es/button/button-group';
-import InvoiceSlip from '@/pages/InvoiceForm/component/InvoiceSlip';
+import InvoiceSlip from '@/pages/MainForm/component/MainSlip';
 import { convertRupeeToWords } from '@/utils/utils';
 import { toFixDec, gst18 } from '../../../utils/utils';
 import { FormInstance } from '@ant-design/pro-form';
+import { useModel } from 'umi';
 
 export type InvoiceModalType = {
   setData: React.Dispatch<React.SetStateAction<FormStateTypes>>;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  visible: boolean;
   formRef?: FormInstance;
   data: FormStateTypes;
   children: Element[] | React.ReactNode;
@@ -16,7 +19,8 @@ export type InvoiceModalType = {
 };
 
 const InvoiceModal: React.FC<InvoiceModalType> = (props) => {
-  const [visible, setVisible] = React.useState(false);
+  // const [visible, setVisible] = React.useState(false);
+  const { visible, setVisible } = props;
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const calculateData = (props: InvoiceModalType) => {
     return new Promise((resolve, reject) => {

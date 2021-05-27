@@ -16,7 +16,7 @@ type FormStateTypes = {
   s_state: string;
   s_zip: number | string;
   rent_type: 'variable' | 'fixed' | string;
-  invoice_no: string;
+  invoice_no?: string;
   invoice_date: string | any;
   area: number;
   unit: 'sq. ft.' | string;
@@ -26,21 +26,15 @@ type FormStateTypes = {
   p_content: string;
   p_note?: string;
   per_rate: number;
-  isSubmitting: boolean;
   submitted: boolean;
-  isFormValid: boolean;
   taxable_amount: number;
   taxed_amount: number;
   tax_amount: number;
   isSameState: boolean;
   amount_in_words: string;
   t_name: string;
-  template_info: TemplateInfo;
 };
-type TemplateInfo = {
-  id: number;
-  name: string;
-};
+
 type HelperStateType = {};
 type AddressProps = {
   prefix: string;

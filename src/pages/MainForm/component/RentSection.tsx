@@ -2,19 +2,21 @@ import React from 'react';
 import { Col, Divider, Row, Space } from 'antd';
 import { ProFormSelect, ProFormDigit } from '@ant-design/pro-form';
 import { useState, useContext, useMemo } from 'react';
-import ProDescriptions from '@ant-design/pro-descriptions';
-import { InvoiceFormContext } from './context/InvoiceFormContext';
+import { InvoiceFormContext } from './context/MainFormContext';
 import { useModel } from 'umi';
-import { MyFormData } from '@/models/types';
 import { gst18, toFixDec } from '@/utils/utils';
 
 const RentInfoFormSection: React.FC = () => {
   const { formRef } = useContext(InvoiceFormContext);
-  // const { formState, setFormState }: MyFormData = useModel('form');
-  // const { increment } = useModel('counter'); //used to rerender state form
   const [rentType, setRentType] = useState('variable');
   const [counter, setCounter] = useState(-50);
-
+  const helper = {
+    perRate: toFixDec(formRef?.getFieldValue('per_rate'), 3), //3 dec
+    area: toFixDec(formRef?.getFieldValue('area'), 2), // 2 dec
+    taxAmount: gst18(formRef?.getFieldValue('taxable_amount')), //rounded off
+    taxableAmount: Math.round(formRef?.getFieldValue('taxable_amount')),
+    isSameState: formRef?.getFieldValue('bf_state') == formRef?.getFieldValue('bt_state'),
+  };
   const handleAreaChange = (v: number | string) => {
     v = parseFloat(`${v}`);
     const taxable_amount = toFixDec(v, 2) * helper.perRate;
@@ -38,30 +40,8 @@ const RentInfoFormSection: React.FC = () => {
     setCounter(counter + 1);
   };
 
-  const helper = {
-    perRate: toFixDec(formRef?.getFieldValue('per_rate'), 3), //3 dec
-    area: toFixDec(formRef?.getFieldValue('area'), 2), // 2 dec
-    taxAmount: gst18(formRef?.getFieldValue('taxable_amount')), //rounded off
-    taxableAmount: Math.round(formRef?.getFieldValue('taxable_amount')),
-    isSameState: formRef?.getFieldValue('bf_state') == formRef?.getFieldValue('bt_state'),
-  };
-  // const setTaxableAmountField = () => {
-  //   const taxable_amount = helper.area * helper.perRate;
-  //   if (rentType != 'fixed') {
-  //     formRef?.setFieldsValue({
-  //       taxable_amount: taxable_amount,
-  //     });
-  //     setTAmount(taxable_amount);
-  //   }
-  //   // const tax_amount = helper.taxAmount;
-  //   // setFormState((prevState) => ({
-  //   //   ...prevState,
-  //   //   // per_rate: per_rate,
-  //   //   // taxable_amount: taxable_amount,
-  //   //   tax_amount: tax_amount,
-  //   //   taxed_amount: tax_amount + Math.round(taxable_amount),
-  //   // }));
-  // };
+
+
   const HelpComp = () => (
     <table style={{ textAlign: 'right' }}>
       <tbody>

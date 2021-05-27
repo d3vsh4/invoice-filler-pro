@@ -1,2 +1,2 @@
-const BASE_URL = 'https://invoice-backend.vercel.app';
+const BASE_URL = '';
 export default BASE_URL;

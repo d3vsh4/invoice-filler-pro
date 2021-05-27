@@ -138,3 +138,11 @@ export const toFixDec = (num: number, p: number): number =>
 export const gst18 = (taxable_amount_in_float: number): number => {
   return Math.round((Math.round(taxable_amount_in_float) * 18) / 100);
 };
+
+export const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
