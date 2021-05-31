@@ -1,12 +1,30 @@
-import { useModel } from '@/.umi/plugin-model/useModel';
+
 import { ProFormDatePicker, ProFormText } from '@ant-design/pro-form';
 import { Col, Row } from 'antd';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TemplateSelector from './TemplateSelector';
+import { getFiscalYear } from '@/utils/utils';
+import { useModel } from 'umi';
+import { useContext } from 'react';
+import { MainFormContext } from './context/MainFormContext';
 
 const InvoiceInfoFormSection: React.FC = () => {
   const dateFormat = 'DD/MM/YYYY';
-
+  const { getLastId, showInvoices } = useModel('db');
+  const { formRef } = useContext(MainFormContext);
+  // TODO: setting invoice number
+  useEffect(() => {
+    const doSetInv = async () => {
+      var lastID = await getLastId();
+      lastID = lastID ? lastID : "00-00/0000";
+      const newID = getFiscalYear() + '/' + (Number(lastID.slice(6, 10)) + 1).toString().padStart(4, '0');
+      // setIvn(newID);
+      formRef?.setFieldsValue({ "invoice_no": newID })
+      const info = await showInvoices();
+      console.log(newID, lastID, info);
+    }
+    doSetInv();
+  });
   return (
     <>
       <Row justify="space-between">
@@ -14,8 +32,10 @@ const InvoiceInfoFormSection: React.FC = () => {
           rules={[{ required: true }]}
           name="invoice_no"
           label="Invoice Number"
-          initialValue={"1"}
+          initialValue={"00-00/0000"}
+          style={{ textAlign: "start" }}
           placeholder="enter invoice number here"
+          readonly
         />
         <Col span={1}></Col>
         <ProFormDatePicker

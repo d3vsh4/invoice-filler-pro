@@ -31,7 +31,6 @@ export const INITIAL_FORM_VALUES = {
   p_content: '',
   p_note: '',
   per_rate: 0.0,
-  submitted: false,
   taxable_amount: 0.0,
   taxed_amount: 0.0,
   tax_amount: 0.0,
@@ -58,7 +57,7 @@ export const INITIAL_TEST_FORM_VALUES = {
   s_state: 'Assam',
   s_zip: 781035,
   rent_type: 'variable',
-  invoice_no: '21-22/001',
+  // invoice_no: '21-22/0001',
   invoice_date: moment(moment().toDate(), dateFormat),
   area: 1,
   unit: 'sq. ft.',
@@ -75,4 +74,8 @@ export const INITIAL_TEST_FORM_VALUES = {
   isSameState: false,
   amount_in_words: 'zero',
   t_name: 'initial',
+};
+
+export default () => {
+  return;
 };

@@ -2,12 +2,12 @@ import React from 'react';
 import { Col, Divider, Row, Space } from 'antd';
 import { ProFormSelect, ProFormDigit } from '@ant-design/pro-form';
 import { useState, useContext, useMemo } from 'react';
-import { InvoiceFormContext } from './context/MainFormContext';
+import { MainFormContext } from './context/MainFormContext';
 import { useModel } from 'umi';
 import { gst18, toFixDec } from '@/utils/utils';
 
 const RentInfoFormSection: React.FC = () => {
-  const { formRef } = useContext(InvoiceFormContext);
+  const { formRef } = useContext(MainFormContext);
   const [rentType, setRentType] = useState('variable');
   const [counter, setCounter] = useState(-50);
   const helper = {

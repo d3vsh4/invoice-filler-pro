@@ -1,10 +1,10 @@
-import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
+import { INITIAL_FORM_VALUES } from '@/models/InitialValues';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText } from '@ant-design/pro-form';
 import { Button, message, Row, Col, Card } from 'antd';
 import { useModel } from 'umi';
 import CompanyFormSection from './CompanySection';
-import { InvoiceFormContext } from './context/MainFormContext';
+import { MainFormContext } from './context/MainFormContext';
 import ParticularsFormSection from './ParticularsSection';
 import RentInfoFormSection from './RentSection';
 import SupplyInfoFormSection from './SupplySection';
@@ -20,7 +20,7 @@ export default (props: PropsType) => {
   const formRef = useRef<FormInstance>();
   const [formState, setFormStates] = useState<FormStateTypes>(initialValues);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { formTemplates, setFormTemplates } = useModel('formTemplates');
+  const { putTemplates } = useModel('formTemplates');
   // const { increment, counter } = useModel('counter'); //used to rerender this component even unused
 
   const setFormStatesIndirect = (values: any) => {
@@ -34,18 +34,15 @@ export default (props: PropsType) => {
     }));
   };
   const setFormTemplatesIndirect = (values: any) => {
-    setFormTemplates((pv) => ({
-      ...pv,
-      [values.t_name]: {
-        ...formState,
-        ...values,
-      },
-    }));
+    putTemplates({
+      ...formState,
+      ...values,
+    });
   };
   return (
     <>
       <ModalForm
-        title="Add Template"
+        title="Add Options"
         width={1200}
         formRef={formRef}
         onVisibleChange={setModalVisible}
@@ -57,7 +54,7 @@ export default (props: PropsType) => {
             }}
           >
             <PlusOutlined />
-            {edit ? 'edit' : 'Add Template'}
+            {edit ? 'edit' : 'Add Options'}
           </Button>
         }
         // onValuesChange={(cv, v) => {
@@ -84,7 +81,7 @@ export default (props: PropsType) => {
           return true;
         }}
       >
-        <InvoiceFormContext.Provider value={{ formRef: formRef.current }}>
+        <MainFormContext.Provider value={{ formRef: formRef.current }}>
           <Row>
             <Col span={24}>
               <Card title="Template Details">
@@ -117,7 +114,7 @@ export default (props: PropsType) => {
           <Card title="Particulars">
             <ParticularsFormSection />
           </Card>
-        </InvoiceFormContext.Provider>
+        </MainFormContext.Provider>
       </ModalForm>
     </>
   );

@@ -1,12 +1,12 @@
 import { Card, Col, message, Row, Typography, Button } from 'antd';
 import ProForm from '@ant-design/pro-form';
 import styles from './InvoiceForm.less';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import InvoiceModal from './component/MainSubmitModal';
-import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
-import { INITIAL_TEST_FORM_VALUES } from '../../constants/InitialValues';
+import { INITIAL_FORM_VALUES } from '@/models/InitialValues';
+import { INITIAL_TEST_FORM_VALUES } from '../../models/InitialValues';
 import Title from 'antd/lib/typography/Title';
-import { InvoiceFormContext } from './component/context/MainFormContext';
+import { MainFormContext } from './component/context/MainFormContext';
 import CompanyFormSection from './component/CompanySection';
 import InvoiceInfoFormSection from './component/InvoiceSection';
 import ParticularsFormSection from './component/ParticularsSection';
@@ -17,6 +17,7 @@ import { MyFormData } from '@/models/types';
 import MainTable from './component/MainTable';
 import { getFiscalYear } from '@/utils/utils';
 import React from 'react';
+
 const { Text } = Typography;
 
 const waitTime = (time: number = 100) => {
@@ -31,11 +32,13 @@ export default () => {
   const [form] = ProForm.useForm();
   const [visible, setVisible] = React.useState(false);
   const { formState, setFormState }: MyFormData = useModel('form');
-  const { formInvoices, setFormInvoices } = useModel('formInvoices');
+  const { getInvoiceFormData, putFormInvoiceData } = useModel('formInvoices');
+  const { addInvoice, showInvoices, getLastId, deleteDb } = useModel('db')
   // const { isEmpty, getLastID, addID } = useModel('formIdCounterDb')
   // const [formState, setFormState] = useState<FormStateTypes>(INITIAL_FORM_VALUES);
   const demo = useModel('demo');
   const { } = useModel('counter'); //used to rerender this component evenunused
+
   const checkForm = async () =>
     await form
       .validateFields()
@@ -60,13 +63,14 @@ export default () => {
             // form.setFieldsValue({ 'invoice_no': (parseFloat(id) + 1).toString() })
           }}
           onFinish={async (values: FormStateTypes) => {
-            setFormInvoices((pv) => ({
-              ...pv,
-              [values.invoice_no ? values.invoice_no : "0001"]: {
+            await putFormInvoiceData({
+              doc: {
                 ...formState,
                 ...values,
               },
-            }));
+              id: values.invoice_no,
+              key: values.invoice_no,
+            }, values.invoice_no!);
             // await addID();
             setVisible(false);
             setFormState(INITIAL_FORM_VALUES);
@@ -105,6 +109,12 @@ export default () => {
                 >
                   Fill Form
                 </Button>
+                <Button type="dashed" onClick={
+                  async () => {
+                    await deleteDb();
+                    message.success("db deleted succesfully")
+                  }
+                }>Delete db</Button>
               </>
             ),
             // submitButtonProps: {
@@ -116,7 +126,8 @@ export default () => {
           }}
           initialValues={INITIAL_FORM_VALUES}
         >
-          <InvoiceFormContext.Provider value={{ formRef: form }}>
+          { }
+          <MainFormContext.Provider value={{ formRef: form }}>
             <Card title={<Title level={4}>Create Invoice</Title>} style={{ textAlign: 'center' }}>
               <InvoiceInfoFormSection />
             </Card>
@@ -141,7 +152,7 @@ export default () => {
             <Card title="Particulars">
               <ParticularsFormSection />
             </Card>
-          </InvoiceFormContext.Provider>
+          </MainFormContext.Provider>
         </ProForm>
       </Col>
       <Col>

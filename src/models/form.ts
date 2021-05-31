@@ -1,4 +1,4 @@
-import { INITIAL_FORM_VALUES } from '@/constants/InitialValues';
+import { INITIAL_FORM_VALUES } from '@/models/InitialValues';
 import { useCallback, useMemo, useState } from 'react';
 import { MyFormData } from './types';
 

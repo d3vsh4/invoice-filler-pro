@@ -1,15 +1,18 @@
+import { MyFormDBData } from '@/models/formInvoices';
 import { Button, Table } from 'antd';
 import { useModel } from 'umi';
 import PreviewSlipModal from './PreviewSlipModal';
 export default () => {
-    const { formInvoices } = useModel('formInvoices');
+    const { getInvoiceFormData } = useModel('formInvoices');
     type RecordType = {
-        key: number;
+        key: string;
         name: string;
+        data: FormStateTypes;
     };
-    const dataSource = Object.keys(formInvoices).map((s: string, i: number) => ({
-        key: i,
-        name: s,
+    const dataSource = getInvoiceFormData().map((obj: MyFormDBData, i: number) => ({
+        key: obj.key,
+        name: obj.id,
+        data: obj.doc
     }));
 
     const columns = [
@@ -24,7 +27,7 @@ export default () => {
             dataIndex: 'name',
             key: 'name',
             render: (text: string, record: RecordType) => (
-                <PreviewSlipModal data={formInvoices[record.name]} />
+                <PreviewSlipModal data={record.data} />
             ),
         },
     ];

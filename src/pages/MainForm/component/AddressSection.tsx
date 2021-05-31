@@ -3,14 +3,14 @@ import { Col, Row } from 'antd';
 import { ProFormSelect, ProFormDigit, ProFormText } from '@ant-design/pro-form';
 import { useContext } from 'react';
 import { stateData } from './state-city';
-import { InvoiceFormContext } from './context/MainFormContext';
+import { MainFormContext } from './context/MainFormContext';
 import { useModel } from 'umi';
 const cityData = stateData;
 const states = Object.keys(cityData);
 
 const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
   const [cities, setCities] = React.useState(cityData[states[3]]);
-  const { formRef } = useContext(InvoiceFormContext);
+  const { formRef } = useContext(MainFormContext);
 
   const { increment } = useModel('counter');
   const handleStateChange = (value: string) => {

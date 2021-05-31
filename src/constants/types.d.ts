@@ -26,7 +26,6 @@ type FormStateTypes = {
   p_content: string;
   p_note?: string;
   per_rate: number;
-  submitted: boolean;
   taxable_amount: number;
   taxed_amount: number;
   tax_amount: number;

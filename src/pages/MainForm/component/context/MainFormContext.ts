@@ -1,7 +1,7 @@
 import { FormInstance } from '@ant-design/pro-form';
 import { createContext } from 'react';
 
-type InvoiceFormContextTypes = {
+type MainFormContextTypes = {
   formRef?: FormInstance;
 };
-export const InvoiceFormContext = createContext<InvoiceFormContextTypes>({});
+export const MainFormContext = createContext<MainFormContextTypes>({});
