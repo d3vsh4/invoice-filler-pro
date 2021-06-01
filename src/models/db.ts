@@ -7,7 +7,10 @@ let localDB = new PouchDB('localDatabase');
 // const getInfo = () => remoteDB.info().then(function (info) {
 //     console.log(info);
 //   })
-
+export const showInvoices = async () => {
+  const doc = await localDB.allDocs({ include_docs: true, descending: true });
+  return doc;
+};
 export default () => {
   const [syncing, setSync] = useState(false);
 

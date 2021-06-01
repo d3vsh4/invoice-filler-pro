@@ -1,13 +1,14 @@
 import { Button, Table } from 'antd';
 import { useModel } from 'umi';
 import TemplateFormModal from './TemplateFormModal';
+type RecordType = {
+  key: number;
+  name: string;
+};
 export default () => {
   const { formTemplates, setFormTemplates } = useModel('formTemplates');
-  type RecordType = {
-    key: number;
-    name: string;
-  };
-  const dataSource = Object.keys(formTemplates).map((s: string, i: number) => ({
+
+  const dataSource = Object.keys(formTemplates!).map((s: string, i: number) => ({
     key: i,
     name: s,
   }));
@@ -24,7 +25,7 @@ export default () => {
       dataIndex: 'name',
       key: 'name',
       render: (text: string, record: RecordType) => (
-        <TemplateFormModal initialValues={formTemplates[record.name]} edit={true} />
+        <TemplateFormModal initialValues={formTemplates![record.name]} edit={true} />
       ),
     },
   ];

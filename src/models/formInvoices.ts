@@ -1,7 +1,8 @@
 import { INITIAL_FORM_VALUES } from '@/models/InitialValues';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import { message } from 'antd';
 import { useModel } from 'umi';
+
 export type MyFormInvoiceData = {
   getInvoiceFormData: () => MyFormDBData[];
   putFormInvoiceData: (data: any, key: string) => void;
@@ -11,6 +12,8 @@ export type MyFormDBData = {
   id: string;
   key: string;
 };
+const invoices: MyFormDBData[] = [];
+
 export default (): MyFormInvoiceData => {
   //   const [formState, setFormState] = useState<FormStateTypes>({
   //     ...INITIAL_FORM_VALUES,

@@ -35,6 +35,12 @@
     ],
   },
   // {
+  //   name: 'list.table-list',
+  //   icon: 'table',
+  //   path: '/list',
+  //   component: './extras/TableList',
+  // },
+  // {
   //   path: '/admin',
   //   name: 'admin',
   //   icon: 'crown',
