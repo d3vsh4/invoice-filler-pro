@@ -2,16 +2,13 @@ import { INITIAL_FORM_VALUES } from '@/models/InitialValues';
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { message } from 'antd';
 import { useModel } from 'umi';
+import { MyFormDBData } from './types';
 
 export type MyFormInvoiceData = {
   getInvoiceFormData: () => MyFormDBData[];
   putFormInvoiceData: (data: any, key: string) => void;
 };
-export type MyFormDBData = {
-  doc: FormStateTypes;
-  id: string;
-  key: string;
-};
+
 const invoices: MyFormDBData[] = [];
 
 export default (): MyFormInvoiceData => {
@@ -26,7 +23,7 @@ export default (): MyFormInvoiceData => {
     },
   ]);
   // const [invoices, setInvoices] = useState();
-  const { addInvoice, showInvoices, getLastId, deleteDb } = useModel('db');
+  const { addInvoice, showInvoices, getLastId, deleteDb } = useModel('mainDB');
 
   const putFormInvoiceData = async (data: any, key: string) => {
     let invoices = (await showInvoices()).rows;

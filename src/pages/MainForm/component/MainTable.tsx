@@ -1,11 +1,7 @@
-import type { MyFormDBData } from '@/models/formInvoices';
-import { Button, Table } from 'antd';
-import { useModel } from 'umi';
+import { Button, Table, Typography } from 'antd';
 import PreviewSlipModal from './PreviewSlipModal';
-import { INITIAL_FORM_VALUES } from '../../../models/InitialValues';
 import { useEffect, useState } from 'react';
-import { showInvoices } from '@/models/db'
-console.log("testing renderer");
+import { showInvoices } from '@/models/mainDB'
 
 type RecordType = {
     key: string;
@@ -24,15 +20,20 @@ type RecordType = {
 // }]
 const columns = [
     {
-        title: 'Name',
+        title: 'Invoice No.',
         dataIndex: 'name',
         key: 'name',
-        render: (text: string) => <Button>{text}</Button>,
+        render: (text: string) => <Typography.Text strong>{text}</Typography.Text>,
+    },
+    {
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date',
+        render: (text: string, record: RecordType) => <Typography.Text>{record.data.invoice_date}</Typography.Text>,
     },
     {
         title: 'Action',
-        dataIndex: 'name',
-        key: 'name',
+        key: 'action',
         render: (text: string, record: RecordType) => (
             <PreviewSlipModal data={record.data} />
         ),
@@ -40,29 +41,7 @@ const columns = [
 ];
 
 
-export default () => {
-    const [dataSource, setData] = useState<{
-        key: string,
-        name: string,
-        data: any
-    }[]>([])
-    useEffect(() => {
-        console.log("in use effects");
+export default (props: { dataSource: RecordType[] }) => {
 
-        (async function doInitials() {
-            let invoices = (await showInvoices()).rows;
-            console.log(invoices);
-            let data = invoices.map((obj: any, i: number) => ({
-                key: obj.key,
-                name: obj.id,
-                data: obj.doc
-            }));
-            if (dataSource.length != data.length)
-                setData(data)
-        })()
-    });
-
-
-
-    return <Table rowKey="uid" dataSource={dataSource} columns={columns} />;
+    return <Table rowKey="uid" dataSource={props.dataSource} columns={columns} />;
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Col, message, Modal, Row, Typography } from 'antd';
+import { Button, Card, Col, message, Modal, Row, Typography, Space } from 'antd';
 import { useState } from 'react';
 import ButtonGroup from "antd/lib/button/button-group";
 import CompanyFormSection from "./CompanySection";
@@ -22,7 +22,7 @@ export default (props: any) => {
   const [visible, setVisible] = React.useState(false);
   const { formState, setFormState }: MyFormData = useModel('form');
   const { getInvoiceFormData, putFormInvoiceData } = useModel('formInvoices');
-  const { addInvoice, showInvoices, getLastId, deleteDb } = useModel('db')
+  const { addInvoice, showInvoices, getLastId, deleteDb } = useModel('mainDB')
   // const { isEmpty, getLastID, addID } = useModel('formIdCounterDb')
   // const [formState, setFormState] = useState<FormStateTypes>(INITIAL_FORM_VALUES);
   const demo = useModel('demo');
@@ -82,7 +82,7 @@ export default (props: any) => {
             form.resetFields();
             // var id = await getLastID()
             // form.setFieldsValue({ 'invoice_no': (parseFloat(id) + 1).toString() })
-            console.log(values);
+            // console.log(values);
             message.success('Submitted successfully');
           }}
           submitter={{
@@ -90,7 +90,7 @@ export default (props: any) => {
               submitText: 'Submit',
             },
             render: (props, dom) => (
-              <>
+              <Space>
                 <InvoiceModal
                   setData={setFormState}
                   setVisible={setVisible}
@@ -123,7 +123,7 @@ export default (props: any) => {
                   }
                 }>Delete db</Button>
                 <Button type="primary" onClick={handleOk}>Done</Button>
-              </>
+              </Space>
             ),
             // submitButtonProps: {
             //   size: 'large',

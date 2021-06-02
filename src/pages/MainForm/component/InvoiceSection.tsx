@@ -10,7 +10,7 @@ import { MainFormContext } from './context/MainFormContext';
 
 const InvoiceInfoFormSection: React.FC = () => {
   const dateFormat = 'DD/MM/YYYY';
-  const { getLastId, showInvoices } = useModel('db');
+  const { getLastId, showInvoices } = useModel('mainDB');
   const { formRef } = useContext(MainFormContext);
   // TODO: setting invoice number
   useEffect(() => {
@@ -20,8 +20,8 @@ const InvoiceInfoFormSection: React.FC = () => {
       const newID = getFiscalYear() + '/' + (Number(lastID.slice(6, 10)) + 1).toString().padStart(4, '0');
       // setIvn(newID);
       formRef?.setFieldsValue({ "invoice_no": newID })
-      const info = await showInvoices();
-      console.log(newID, lastID, info);
+      // const info = await showInvoices();
+      // console.log(newID, lastID, info);
     }
     doSetInv();
   });
