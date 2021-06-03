@@ -1,19 +1,20 @@
 import React from "react";
 import { Button, Card, Col, message, Modal, Row, Typography, Space } from 'antd';
-import { useState } from 'react';
 import ButtonGroup from "antd/lib/button/button-group";
-import CompanyFormSection from "./CompanySection";
+import CompanyFormSection from "./common/CompanySection";
 import InvoiceInfoFormSection from "./InvoiceSection";
-import ParticularsFormSection from "./ParticularsSection";
-import RentInfoFormSection from "./RentSection";
+import ParticularsFormSection from "./common/ParticularsSection";
+import RentInfoFormSection from "./common/RentSection";
 import SupplyInfoFormSection from "./SupplySection";
 import ProForm from '@ant-design/pro-form';
 
 import { useModel } from 'umi';
 import { MyFormData } from '@/models/types';
 import { INITIAL_FORM_VALUES, INITIAL_TEST_FORM_VALUES } from "@/models/InitialValues";
-import { MainFormContext } from "./context/MainFormContext";
+import { MainFormContext } from "./common/context/MainFormContext";
 import InvoiceModal from "./MainSubmitModal";
+import { addInvoice, deleteDb } from "@/services/db-services/mainDB";
+import { PlusSquareOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 
 
@@ -21,8 +22,6 @@ export default (props: any) => {
   const [form] = ProForm.useForm();
   const [visible, setVisible] = React.useState(false);
   const { formState, setFormState }: MyFormData = useModel('form');
-  const { getInvoiceFormData, putFormInvoiceData } = useModel('formInvoices');
-  const { addInvoice, showInvoices, getLastId, deleteDb } = useModel('mainDB')
   // const { isEmpty, getLastID, addID } = useModel('formIdCounterDb')
   // const [formState, setFormState] = useState<FormStateTypes>(INITIAL_FORM_VALUES);
   const demo = useModel('demo');
@@ -45,10 +44,21 @@ export default (props: any) => {
     console.log('Clicked cancel button');
     setMainVisible(false);
   };
+
+  const putFormInvoiceData = async (data: any) => {
+    await addInvoice({
+      ...data.doc,
+    });
+    // console.log('in add invoice: ', invoices);
+
+    message.success('invoice added');
+    return { ok: 'ok' };
+  };
+
   return (
     <>
       <ButtonGroup>
-        <Button type="primary" onClick={showModal}>
+        <Button type="primary" onClick={showModal} icon={<PlusSquareOutlined />}>
           Create Invoice
         </Button>
       </ButtonGroup>
@@ -75,14 +85,10 @@ export default (props: any) => {
               },
               id: values.invoice_no,
               key: values.invoice_no,
-            }, values.invoice_no!);
-            // await addID();
+            });
             setVisible(false);
             setFormState(INITIAL_FORM_VALUES);
             form.resetFields();
-            // var id = await getLastID()
-            // form.setFieldsValue({ 'invoice_no': (parseFloat(id) + 1).toString() })
-            // console.log(values);
             message.success('Submitted successfully');
           }}
           submitter={{
@@ -90,40 +96,43 @@ export default (props: any) => {
               submitText: 'Submit',
             },
             render: (props, dom) => (
-              <Space>
-                <InvoiceModal
-                  setData={setFormState}
-                  setVisible={setVisible}
-                  visible={visible}
-                  formRef={props.form}
-                  data={formState}
-                  children={dom.pop()}
-                  checkInputForm={checkForm}
-                />
-                {dom}
-                <Button
-                  type="primary"
-                  ghost
-                  onClick={(e) => {
-                    form.setFieldsValue(INITIAL_TEST_FORM_VALUES);
-                    setFormState((prevData) => ({
-                      ...INITIAL_TEST_FORM_VALUES,
-                      invoice_date: form.getFieldValue('invoice_date').format('DD/MM/YYYY'),
-                    }));
-                  }}
-                >
-                  Fill Form
-                </Button>
-                <Button type="dashed" onClick={
-                  async () => {
-                    await deleteDb();
-                    setFormState({ ...INITIAL_FORM_VALUES });
-                    form.resetFields();
-                    message.success("db deleted succesfully")
-                  }
-                }>Delete db</Button>
-                <Button type="primary" onClick={handleOk}>Done</Button>
-              </Space>
+              <Row justify="end">
+                <Space>
+                  <Button type="default" onClick={handleOk}>return</Button>
+
+                  {dom}
+                  <Button
+                    type="primary"
+                    ghost
+                    onClick={(e) => {
+                      form.setFieldsValue(INITIAL_TEST_FORM_VALUES);
+                      setFormState((prevData) => ({
+                        ...INITIAL_TEST_FORM_VALUES,
+                        invoice_date: form.getFieldValue('invoice_date').format('DD/MM/YYYY'),
+                      }));
+                    }}
+                  >
+                    Fill Form
+                  </Button>
+                  <Button danger onClick={
+                    async () => {
+                      await deleteDb();
+                      setFormState({ ...INITIAL_FORM_VALUES });
+                      form.resetFields();
+                      message.success("db deleted succesfully")
+                    }
+                  }>Delete db</Button>
+                  <InvoiceModal
+                    setData={setFormState}
+                    setVisible={setVisible}
+                    visible={visible}
+                    formRef={props.form}
+                    data={formState}
+                    children={dom.pop()}
+                    checkInputForm={checkForm}
+                  />
+                </Space>
+              </Row>
             ),
             // submitButtonProps: {
             //   size: 'large',

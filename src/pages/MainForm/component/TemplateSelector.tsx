@@ -1,24 +1,35 @@
+import { showTemplates } from '@/services/db-services/templateDB';
 import { ProFormSelect } from '@ant-design/pro-form';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useModel } from 'umi';
-import { MainFormContext } from './context/MainFormContext';
+import { MainFormContext } from './common/context/MainFormContext';
+import { tempDB } from '../../../services/db-services/templateDB';
 
 const TemplateSelector: React.FC = () => {
-  const { formTemplates } = useModel('formTemplates');
+  // const { formTemplates } = useModel('formTemplates');
   const { formRef } = useContext(MainFormContext);
-  const handleTemplateChange = (name: string) => {
-    formRef?.setFieldsValue(formTemplates![name]);
+  const [options, setOptions] = useState<{ value: string; lable: string; }[]>([]);
+  const handleTemplateChange = async (name: string) => {
+    const templates = (await tempDB.get(name));
+    formRef?.setFieldsValue(templates);
   };
+  useEffect(() => {
+    (async function doInitialize() {
+      const templates = (await showTemplates()).rows;
+      const op = templates.map((t) => ({ value: t.id, lable: t.id }));
+      if (op.length != options.length) {
+        setOptions(op);
+      }
+    })()
+  })
   return (
     <ProFormSelect
       //   fieldProps={{ labelInValue: true }}
       //   rules={[{ required: true }]}
       label="Form Template"
       placeholder="Select form template"
-      //   name=""
-      initialValue={'initial'}
-      fieldProps={{ defaultValue: 'initial', onChange: handleTemplateChange }}
-      options={Object.keys(formTemplates!).map((s: string) => ({ value: s, label: s }))}
+      fieldProps={{ onChange: handleTemplateChange }}
+      options={options}
       allowClear={false}
     />
   );

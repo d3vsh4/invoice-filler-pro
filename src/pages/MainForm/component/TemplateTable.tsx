@@ -1,34 +1,36 @@
-import { Button, Table } from 'antd';
-import { useModel } from 'umi';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Button, Space, Table, Typography } from 'antd';
 import TemplateFormModal from './TemplateFormModal';
+
 type RecordType = {
-  key: number;
+  key: string;
   name: string;
+  data: FormStateTypes;
 };
-export default () => {
-  const { formTemplates, setFormTemplates } = useModel('formTemplates');
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text: string, record: RecordType) => <Typography.Text strong>{record.name}</Typography.Text>,
+  },
+  {
+    title: 'Action',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text: string, record: RecordType) => (
+      <Space>
+        <TemplateFormModal initialValues={record.data} edit={true} />
+        <Button type="default" danger icon={<DeleteOutlined />}> Delete</Button>
+      </Space>
+    ),
+  },
+];
 
-  const dataSource = Object.keys(formTemplates!).map((s: string, i: number) => ({
-    key: i,
-    name: s,
-  }));
+export default (props: { dataSource: RecordType[], loading: boolean }) => {
+  // const { formTemplates, setFormTemplates } = useModel('formTemplates');
+  const { dataSource, loading } = props
 
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text: string) => <Button>{text}</Button>,
-    },
-    {
-      title: 'Action',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text: string, record: RecordType) => (
-        <TemplateFormModal initialValues={formTemplates![record.name]} edit={true} />
-      ),
-    },
-  ];
 
-  return <Table dataSource={dataSource} columns={columns} />;
+  return <Table dataSource={dataSource} columns={columns} loading={loading} />;
 };

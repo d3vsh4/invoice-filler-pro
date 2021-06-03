@@ -2,8 +2,8 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import { ProFormRadio } from '@ant-design/pro-form';
 import { useContext } from 'react';
-import { MainFormContext } from './context/MainFormContext';
-import AdressFormSection from './AddressSection';
+import { MainFormContext } from './common/context/MainFormContext';
+import AdressFormSection from './common/AddressSection';
 
 const SupplyInfoFormSection: React.FC<DataProps> = () => {
   const { formRef } = useContext(MainFormContext);

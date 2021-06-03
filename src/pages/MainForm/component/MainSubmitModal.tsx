@@ -2,11 +2,12 @@ import { Button, Modal, Space } from 'antd';
 import React from 'react';
 import GenPrint from '@/components/common/GenPrint';
 import ButtonGroup from 'antd/es/button/button-group';
-import InvoiceSlip from '@/pages/MainForm/component/MainSlip';
+import InvoiceSlip from '@/pages/MainForm/component/common/MainSlip';
 import { convertRupeeToWords } from '@/utils/utils';
 import { toFixDec, gst18 } from '../../../utils/utils';
 import { FormInstance } from '@ant-design/pro-form';
 import { useModel } from 'umi';
+import { PlusSquareOutlined } from '@ant-design/icons';
 
 export type InvoiceModalType = {
   setData: React.Dispatch<React.SetStateAction<FormStateTypes>>;
@@ -86,8 +87,8 @@ const InvoiceModal: React.FC<InvoiceModalType> = (props) => {
   return (
     <>
       <ButtonGroup>
-        <Button type="primary" onClick={showModal}>
-          Create Invoice
+        <Button type="primary" onClick={showModal} >
+          Preview & Submit
         </Button>
       </ButtonGroup>
       <Modal
@@ -102,17 +103,6 @@ const InvoiceModal: React.FC<InvoiceModalType> = (props) => {
           <Button key="back" onClick={handleCancel}>
             Return
           </Button>,
-          // <Button
-          //   key="submit"
-          //   type="primary"
-          //   disabled={!props.data.submitted}
-          //   loading={confirmLoading}
-          // >
-          //   Print
-          // </Button>,
-          //     <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
-          //     Submit
-          //   </Button>,
           <Space>{props.children}</Space>, //the buttons from the form like submit
         ]}
       >

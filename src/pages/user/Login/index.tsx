@@ -99,7 +99,6 @@ const Login: React.FC = () => {
           </div>
           <div className={styles.desc}>
             {intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
-            {intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
           </div>
         </div>
 

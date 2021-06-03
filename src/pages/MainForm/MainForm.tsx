@@ -5,7 +5,7 @@ import MainTable from './component/MainTable';
 import React, { useEffect, useState } from 'react';
 import MainFormModal from './component/MainFormModal';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { showInvoices } from '@/models/mainDB';
+import { showInvoices } from '@/services/db-services/mainDB';
 const { Search } = Input;
 
 type RecordType = {

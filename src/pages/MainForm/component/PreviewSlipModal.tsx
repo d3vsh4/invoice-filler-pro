@@ -2,8 +2,9 @@ import React from "react";
 import { Button, Modal } from 'antd';
 import { useState } from 'react';
 import GenPrint from "@/components/common/GenPrint";
-import InvoiceSlip from "./MainSlip";
+import InvoiceSlip from "./common/MainSlip";
 import ButtonGroup from "antd/lib/button/button-group";
+import { PrinterOutlined } from "@ant-design/icons";
 
 export default (props: { data: FormStateTypes }) => {
     const [visible, setVisible] = useState(false);
@@ -19,7 +20,7 @@ export default (props: { data: FormStateTypes }) => {
     return (
         <>
             <ButtonGroup>
-                <Button type="primary" onClick={showModal}>
+                <Button type="primary" onClick={showModal} icon={<PrinterOutlined />}>
                     Preview
                 </Button>
             </ButtonGroup>

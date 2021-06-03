@@ -1,44 +1,28 @@
 import { INITIAL_FORM_VALUES } from '@/models/InitialValues';
-import { PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText } from '@ant-design/pro-form';
 import { Button, message, Row, Col, Card } from 'antd';
 import { useModel } from 'umi';
-import CompanyFormSection from './CompanySection';
-import { MainFormContext } from './context/MainFormContext';
-import ParticularsFormSection from './ParticularsSection';
-import RentInfoFormSection from './RentSection';
+import CompanyFormSection from './common/CompanySection';
+import { MainFormContext } from './common/context/MainFormContext';
+import ParticularsFormSection from './common/ParticularsSection';
+import RentInfoFormSection from './common/RentSection';
 import SupplyInfoFormSection from './SupplySection';
 import { useReducer, useRef, useState } from 'react';
 import { FormInstance } from 'antd';
+import { addTemplate, updateTemplate } from '@/services/db-services/templateDB';
 
 type PropsType = {
   initialValues: FormStateTypes;
   edit?: boolean;
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default (props: PropsType) => {
-  const { initialValues, edit } = props;
-  const formRef = useRef<FormInstance>();
-  const [formState, setFormStates] = useState<FormStateTypes>(initialValues);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { putTemplates } = useModel('formTemplates');
-  // const { increment, counter } = useModel('counter'); //used to rerender this component even unused
+  const { initialValues, edit, setLoading } = props;
+  console.log(initialValues);
 
-  const setFormStatesIndirect = (values: any) => {
-    setFormStates((pv) => ({
-      ...pv,
-      ...values,
-      template_info: {
-        name: values.t_name,
-        id: new Date().getUTCMilliseconds(),
-      },
-    }));
-  };
-  const setFormTemplatesIndirect = (values: any) => {
-    putTemplates({
-      ...formState,
-      ...values,
-    });
-  };
+  const formRef = useRef<FormInstance>();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   return (
     <>
       <ModalForm
@@ -49,12 +33,13 @@ export default (props: PropsType) => {
         trigger={
           <Button
             type="primary"
+            icon={edit ? <EditOutlined /> : null}
             onClick={() => {
               setModalVisible(true);
             }}
           >
-            <PlusOutlined />
-            {edit ? 'edit' : 'Add Options'}
+            {!edit ? <PlusOutlined /> : null}
+            {edit ? 'Edit' : 'Add Options'}
           </Button>
         }
         // onValuesChange={(cv, v) => {
@@ -72,12 +57,14 @@ export default (props: PropsType) => {
           },
         }}
         onFinish={async (values) => {
-          console.log(values);
-          //   setFormStatesIndirect(values);
-          console.log(formState);
-          //   await waitTime(200);
-          setFormTemplatesIndirect(values);
-          message.success('Saved');
+          setLoading ? setLoading(true) : null;
+          if (edit) await updateTemplate({
+            ...values,
+          })
+          else await addTemplate({
+            ...values,
+          })
+          setLoading ? setLoading(false) : null;
           return true;
         }}
       >
@@ -90,7 +77,7 @@ export default (props: PropsType) => {
                   name={'t_name'}
                   label="Template Name"
                   placeholder="Please enter the name"
-                // readonly={edit}
+                  readonly={edit}
                 />
               </Card>
             </Col>

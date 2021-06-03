@@ -6,11 +6,11 @@ import TemplateSelector from './TemplateSelector';
 import { getFiscalYear } from '@/utils/utils';
 import { useModel } from 'umi';
 import { useContext } from 'react';
-import { MainFormContext } from './context/MainFormContext';
+import { MainFormContext } from './common/context/MainFormContext';
+import { getLastId } from '@/services/db-services/mainDB';
 
 const InvoiceInfoFormSection: React.FC = () => {
   const dateFormat = 'DD/MM/YYYY';
-  const { getLastId, showInvoices } = useModel('mainDB');
   const { formRef } = useContext(MainFormContext);
   // TODO: setting invoice number
   useEffect(() => {

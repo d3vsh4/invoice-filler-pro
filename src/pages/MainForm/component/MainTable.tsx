@@ -1,7 +1,7 @@
 import { Button, Table, Typography } from 'antd';
 import PreviewSlipModal from './PreviewSlipModal';
 import { useEffect, useState } from 'react';
-import { showInvoices } from '@/models/mainDB'
+import { showInvoices } from '@/services/db-services/mainDB'
 
 type RecordType = {
     key: string;

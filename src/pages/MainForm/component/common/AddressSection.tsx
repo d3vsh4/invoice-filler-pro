@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import { ProFormSelect, ProFormDigit, ProFormText } from '@ant-design/pro-form';
 import { useContext } from 'react';
-import { stateData } from './state-city';
+import { stateData } from '../state-city';
 import { MainFormContext } from './context/MainFormContext';
 import { useModel } from 'umi';
 const cityData = stateData;

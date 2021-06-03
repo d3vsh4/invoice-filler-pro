@@ -1,6 +1,4 @@
-import { getFiscalYear } from '@/utils/utils';
 import PouchDB from 'pouchdb';
-import { useState } from 'react';
 import { message } from 'antd';
 let localDB = new PouchDB('localDatabase');
 
@@ -45,14 +43,3 @@ export const addInvoice = async (data: FormStateTypes) => {
 //   await localDB.replicate.from(remoteDB, opts, (e) => console.log(e));
 //   setSync(false);
 // }
-export default () => {
-  const [syncing, setSync] = useState(false);
-
-  return {
-    addInvoice,
-    showInvoices,
-    getLastId,
-    deleteDb,
-    // sync,
-  };
-};
