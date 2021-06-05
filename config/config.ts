@@ -9,10 +9,6 @@ import routes from './routes';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
-  hash: true,
-  history: {
-    type: 'hash',
-  },
   antd: {},
   dva: {
     hmr: true,
@@ -53,7 +49,6 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
-  publicPath: './',
   // Fast Refresh Hot update
   fastRefresh: {},
   // openAPI: [
