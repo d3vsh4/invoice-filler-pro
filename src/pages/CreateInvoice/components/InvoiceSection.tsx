@@ -6,7 +6,7 @@ import TemplateSelector from './TemplateSelector';
 import { getFiscalYear } from '@/utils/utils';
 import { useModel } from 'umi';
 import { useContext } from 'react';
-import { MainFormContext } from './common/context/MainFormContext';
+import { MainFormContext } from '@/pages/common/context/MainFormContext';
 import { getLastId } from '@/services/db-services/mainDB';
 
 const InvoiceInfoFormSection: React.FC = () => {

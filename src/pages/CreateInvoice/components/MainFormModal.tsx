@@ -1,31 +1,26 @@
 import React from "react";
 import { Button, Card, Col, message, Modal, Row, Typography, Space } from 'antd';
 import ButtonGroup from "antd/lib/button/button-group";
-import CompanyFormSection from "./common/CompanySection";
+import CompanyFormSection from "@/pages/common/CompanySection";
 import InvoiceInfoFormSection from "./InvoiceSection";
-import ParticularsFormSection from "./common/ParticularsSection";
-import RentInfoFormSection from "./common/RentSection";
-import SupplyInfoFormSection from "./SupplySection";
+import ParticularsFormSection from "@/pages//common/ParticularsSection";
+import RentInfoFormSection from "@/pages/common/RentSection";
+import SupplyInfoFormSection from "@/pages/common/SupplySection";
 import ProForm from '@ant-design/pro-form';
 
 import { useModel } from 'umi';
 import { MyFormData } from '@/models/types';
 import { INITIAL_FORM_VALUES, INITIAL_TEST_FORM_VALUES } from "@/models/InitialValues";
-import { MainFormContext } from "./common/context/MainFormContext";
-import InvoiceModal from "./MainSubmitModal";
+import { MainFormContext } from "@/pages/common/context/MainFormContext";
+import MainSubmitModal from "./MainSubmitModal";
 import { addInvoice, deleteDb } from "@/services/db-services/mainDB";
 import { PlusSquareOutlined } from "@ant-design/icons";
 const { Title } = Typography;
-
 
 export default (props: any) => {
   const [form] = ProForm.useForm();
   const [visible, setVisible] = React.useState(false);
   const { formState, setFormState }: MyFormData = useModel('form');
-  // const { isEmpty, getLastID, addID } = useModel('formIdCounterDb')
-  // const [formState, setFormState] = useState<FormStateTypes>(INITIAL_FORM_VALUES);
-  const demo = useModel('demo');
-  const { } = useModel('counter'); //used to rerender this component evenunused
 
   const checkForm = async () =>
     await form
@@ -33,7 +28,6 @@ export default (props: any) => {
       .then((val) => true)
       .catch((_) => false);
 
-  // const [mainVisible, setMainVisible] = useState(false);
   const { mainVisible, setMainVisible } = props.mainVisibility
   const showModal = () => setMainVisible(true);
   const handleOk = () => {
@@ -99,7 +93,6 @@ export default (props: any) => {
               <Row justify="end">
                 <Space>
                   <Button type="default" onClick={handleOk}>return</Button>
-
                   {dom}
                   <Button
                     type="primary"
@@ -122,11 +115,11 @@ export default (props: any) => {
                       message.success("db deleted succesfully")
                     }
                   }>Delete db</Button>
-                  <InvoiceModal
+                  <MainSubmitModal
                     setData={setFormState}
                     setVisible={setVisible}
                     visible={visible}
-                    formRef={props.form}
+                    formRef={props.form!}
                     data={formState}
                     children={dom.pop()}
                     checkInputForm={checkForm}
@@ -143,7 +136,6 @@ export default (props: any) => {
           }}
           initialValues={INITIAL_FORM_VALUES}
         >
-          { }
           <MainFormContext.Provider value={{ formRef: form }}>
             <Card title={<Title level={4}>Create Invoice</Title>} style={{ textAlign: 'center' }}>
               <InvoiceInfoFormSection />
@@ -151,7 +143,7 @@ export default (props: any) => {
             <Row>
               <Col span={12}>
                 <Card title="Billing From">
-                  <CompanyFormSection prefix="bf" />
+                  <CompanyFormSection prefix="bf" readonly={true} />
                 </Card>
               </Col>
               <Col span={12}>

@@ -9,28 +9,37 @@
           {
             name: 'login',
             path: '/user/login',
-            component: './user/Login',
+            component: '@/pages/user/Login',
           },
         ],
       },
     ],
   },
   {
-    path: '/create-invoice-pro',
+    path: '/create-invoice',
     name: 'create-invoice',
     icon: 'smile',
+    component: '@/pages/CreateInvoice/MainForm',
+
+    // routes: [
+    //   {
+    //     path: '/create-invoicecreate',
+    //     name: 'create',
+    //     icon: 'smile',
+    //     component: './CreateInvoice/CreateInvoice',
+    //   },
+    // ],
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    icon: 'setting',
     routes: [
       {
-        path: '/create-invoice-pro/create',
-        name: 'create',
+        path: '/settings/add-options',
+        name: 'add-options',
         icon: 'smile',
-        component: './MainForm/MainForm',
-      },
-      {
-        path: '/create-invoice-pro/settings',
-        name: 'settings',
-        icon: 'setting',
-        component: './MainForm/FormSettings',
+        component: '@/pages/FormSettings/FormSettings',
       },
     ],
   },
@@ -52,7 +61,7 @@
 
   {
     path: '/',
-    redirect: '/create-invoice-pro/create',
+    redirect: '/create-invoice',
   },
   {
     component: './404',

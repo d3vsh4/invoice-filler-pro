@@ -2,8 +2,8 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Card, Col, Row, Divider } from 'antd';
 
 import { INITIAL_FORM_VALUES } from '@/models/InitialValues';
-import TemplateTable from './component/TemplateTable';
-import TemplateFormModal from './component/TemplateFormModal';
+import TemplateTable from './components/TemplateTable';
+import TemplateFormModal from './components/TemplateFormModal';
 import { useEffect, useState } from 'react';
 import { showTemplates } from '@/services/db-services/templateDB';
 
@@ -43,7 +43,6 @@ export default () => {
             <TemplateFormModal initialValues={INITIAL_FORM_VALUES} setLoading={setLoading} />
           </Card>
         </Col>
-        <Divider style={{ border: '0px' }} />
         <Col span={24}>
           <TemplateTable dataSource={dataSource} loading={loading} />
         </Col>

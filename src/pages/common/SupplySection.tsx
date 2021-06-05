@@ -2,10 +2,10 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import { ProFormRadio } from '@ant-design/pro-form';
 import { useContext } from 'react';
-import { MainFormContext } from './common/context/MainFormContext';
-import AdressFormSection from './common/AddressSection';
+import { MainFormContext } from './context/MainFormContext';
+import AdressFormSection from './AddressSection';
 
-const SupplyInfoFormSection: React.FC<DataProps> = () => {
+const SupplyInfoFormSection: React.FC = () => {
   const { formRef } = useContext(MainFormContext);
 
   const setSupplyAdress = (prefix: string) => {

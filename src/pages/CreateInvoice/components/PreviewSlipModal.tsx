@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Modal } from 'antd';
 import { useState } from 'react';
 import GenPrint from "@/components/common/GenPrint";
-import InvoiceSlip from "./common/MainSlip";
+import InvoiceSlip from "@/pages/common/MainSlip";
 import ButtonGroup from "antd/lib/button/button-group";
 import { PrinterOutlined } from "@ant-design/icons";
 

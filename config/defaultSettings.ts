@@ -4,14 +4,14 @@ const Settings: LayoutSettings & {
   pwa?: boolean;
   logo?: string;
 } = {
-  navTheme: 'light',
+  navTheme: 'dark',
   // Dawn
   primaryColor: '#1890ff',
-  layout: 'mix',
+  layout: 'side',
   contentWidth: 'Fixed',
   fixedHeader: false,
   fixSiderbar: true,
-  splitMenus: true,
+  splitMenus: false,
   colorWeak: false,
   title: 'Invoice Filler Pro',
   pwa: true,

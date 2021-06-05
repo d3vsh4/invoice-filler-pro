@@ -1,9 +1,7 @@
-import { Card, Col, message, Row, Typography, Button, Input } from 'antd';
-import ProForm from '@ant-design/pro-form';
-import { useModel } from 'umi';
-import MainTable from './component/MainTable';
-import React, { useEffect, useState } from 'react';
-import MainFormModal from './component/MainFormModal';
+import { Card, Col, Row, Input } from 'antd';
+import MainTable from './components/MainTable';
+import { useEffect, useState } from 'react';
+import MainFormModal from './components/MainFormModal';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { showInvoices } from '@/services/db-services/mainDB';
 const { Search } = Input;
@@ -14,13 +12,11 @@ type RecordType = {
   data: FormStateTypes;
 };
 
-
 export default () => {
-  const demo = useModel('demo');
   const [mainVisible, setMainVisible] = useState(false);
   const [dataSource, setData] = useState<RecordType[]>([])
   const [tableData, setTableData] = useState<RecordType[]>([])
-  const { } = useModel('counter'); //used to rerender this component evenunused
+  // const { } = useModel('counter'); //used to rerender this component evenunused
   const onSearch = (value: string) => {
     const filteredEvents = dataSource.filter(({ key }) => {
       // key = key.toLowerCase();

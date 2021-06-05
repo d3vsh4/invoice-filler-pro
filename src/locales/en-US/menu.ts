@@ -51,5 +51,6 @@ export default {
   'menu.editor.koni': 'Koni Editor',
   'menu.create-invoice': 'Create Invoice',
   'menu.create-invoice.create': 'Create',
-  'menu.create-invoice.settings': 'Settings',
+  'menu.settings': 'Settings',
+  'menu.settings.add-options': 'Add Options',
 };

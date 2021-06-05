@@ -5,11 +5,13 @@ import { useState, useContext, useMemo } from 'react';
 import { MainFormContext } from './context/MainFormContext';
 import { useModel } from 'umi';
 import { gst18, toFixDec } from '@/utils/utils';
+import { useEffect } from 'react';
 
 const RentInfoFormSection: React.FC = () => {
   const { formRef } = useContext(MainFormContext);
   const [rentType, setRentType] = useState('variable');
   const [counter, setCounter] = useState(-50);
+
   const helper = {
     perRate: toFixDec(formRef?.getFieldValue('per_rate'), 3), //3 dec
     area: toFixDec(formRef?.getFieldValue('area'), 2), // 2 dec

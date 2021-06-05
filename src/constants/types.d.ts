@@ -41,7 +41,7 @@ type AddressProps = {
 type DataProps = {
   form?: FormInstance<FormStateTypes>;
   data?: FormStateTypes;
-  prefix?: string;
+  prefix: string;
   disabled?: boolean;
   readonly?: boolean;
 };

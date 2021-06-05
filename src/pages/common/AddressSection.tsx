@@ -2,19 +2,26 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import { ProFormSelect, ProFormDigit, ProFormText } from '@ant-design/pro-form';
 import { useContext } from 'react';
-import { stateData } from '../state-city';
+import { stateData } from './state-city';
 import { MainFormContext } from './context/MainFormContext';
 import { useModel } from 'umi';
+import type { MyFormData } from '@/models/types';
+// import { useModel } from 'umi';
 const cityData = stateData;
 const states = Object.keys(cityData);
 
-const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
+const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly = false }) => {
   const [cities, setCities] = React.useState(cityData[states[3]]);
   const { formRef } = useContext(MainFormContext);
+  const { formState, setFormState }: MyFormData = useModel('form');
 
-  const { increment } = useModel('counter');
+  // const { increment } = useModel('counter');
   const handleStateChange = (value: string) => {
-    increment();
+    // increment();
+    setFormState((prevData) => ({
+      ...prevData,
+      bt_state: value
+    }));
     setCities(cityData[value]);
     formRef?.setFieldsValue({ [prefix + '_city']: cityData[value][0] });
   };
@@ -26,7 +33,8 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
         name={prefix + '_street'}
         label="Street Address"
         placeholder="Please enter the Street address"
-        fieldProps={{ readOnly: readonly }}
+        // fieldProps={{ readOnly: readonly }}
+        disabled={readonly}
       />
       <Row>
         <ProFormSelect
@@ -34,7 +42,8 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
           label="State"
           name={prefix + '_state'}
           showSearch
-          readonly={readonly}
+          disabled={readonly}
+          // readonly={readonly}
           fieldProps={{ onChange: handleStateChange }}
           options={states.map((s: string) => ({ value: s, label: s }))}
           allowClear={false}
@@ -48,7 +57,8 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
           name={prefix + '_city'}
           options={cities.map((city: string) => ({ value: city, label: city }))}
           allowClear={false}
-          readonly={readonly}
+          disabled={readonly}
+        // readonly={readonly}
         />
         <Col span={1}></Col>
         <ProFormDigit
@@ -62,7 +72,8 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
           name={prefix + '_zip'}
           label="Postal/Zip Code"
           placeholder="enter postal/zip"
-          fieldProps={{ readOnly: readonly }}
+          disabled={readonly}
+        // fieldProps={{ readOnly: readonly }}
         />
         <Col span={1}></Col>
 
@@ -79,7 +90,8 @@ const AdressFormSection: React.FC<DataProps> = ({ prefix, readonly }) => {
             label="PAN"
             placeholder="enter PAN here"
             normalize={(value) => (value || '').toUpperCase()}
-            readonly
+            // readonly
+            disabled
           />
         ) : null}
       </Row>

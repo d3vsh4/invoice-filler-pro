@@ -1,9 +1,8 @@
-import { showTemplates } from '@/services/db-services/templateDB';
+import { showTemplates, tempDB } from '@/services/db-services/templateDB';
 import { ProFormSelect } from '@ant-design/pro-form';
 import React, { useContext, useState, useEffect } from 'react';
 import { useModel } from 'umi';
-import { MainFormContext } from './common/context/MainFormContext';
-import { tempDB } from '../../../services/db-services/templateDB';
+import { MainFormContext } from '@/pages/common/context/MainFormContext';
 
 const TemplateSelector: React.FC = () => {
   // const { formTemplates } = useModel('formTemplates');

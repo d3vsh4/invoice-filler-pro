@@ -2,14 +2,11 @@ import { Button, Modal, Space } from 'antd';
 import React from 'react';
 import GenPrint from '@/components/common/GenPrint';
 import ButtonGroup from 'antd/es/button/button-group';
-import InvoiceSlip from '@/pages/MainForm/component/common/MainSlip';
-import { convertRupeeToWords } from '@/utils/utils';
-import { toFixDec, gst18 } from '../../../utils/utils';
+import InvoiceSlip from '@/pages/common/MainSlip';
+import { convertRupeeToWords, gst18, toFixDec } from '@/utils/utils';
 import { FormInstance } from '@ant-design/pro-form';
-import { useModel } from 'umi';
-import { PlusSquareOutlined } from '@ant-design/icons';
 
-export type InvoiceModalType = {
+export type MainSubmitModalType = {
   setData: React.Dispatch<React.SetStateAction<FormStateTypes>>;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   visible: boolean;
@@ -19,11 +16,10 @@ export type InvoiceModalType = {
   checkInputForm: any;
 };
 
-const InvoiceModal: React.FC<InvoiceModalType> = (props) => {
-  // const [visible, setVisible] = React.useState(false);
+const MainSubmitModal: React.FC<MainSubmitModalType> = (props) => {
   const { visible, setVisible } = props;
   const [confirmLoading, setConfirmLoading] = React.useState(false);
-  const calculateData = (props: InvoiceModalType) => {
+  const calculateData = (props: MainSubmitModalType) => {
     return new Promise((resolve, reject) => {
       try {
         // const [taxable_amount, bt_state, bf_state] = props.data;
@@ -71,13 +67,13 @@ const InvoiceModal: React.FC<InvoiceModalType> = (props) => {
     }
   };
 
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 8000);
-  };
+  // const handleOk = () => {
+  //   setConfirmLoading(true);
+  //   setTimeout(() => {
+  //     setVisible(false);
+  //     setConfirmLoading(false);
+  //   }, 8000);
+  // };
 
   const handleCancel = () => {
     console.log('Clicked cancel button');
@@ -94,7 +90,7 @@ const InvoiceModal: React.FC<InvoiceModalType> = (props) => {
       <Modal
         // title="Tax Invoice"
         visible={visible}
-        onOk={handleOk}
+        // onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         width={1124}
@@ -114,4 +110,4 @@ const InvoiceModal: React.FC<InvoiceModalType> = (props) => {
   );
 };
 
-export default InvoiceModal;
+export default MainSubmitModal;
