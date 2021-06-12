@@ -44,4 +44,5 @@ type DataProps = {
   prefix: string;
   disabled?: boolean;
   readonly?: boolean;
+  isTemplate?: boolean;
 };

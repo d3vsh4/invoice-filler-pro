@@ -58,12 +58,14 @@ export default (props: PropsType) => {
         }}
         onFinish={async (values) => {
           setLoading ? setLoading(true) : null;
-          if (edit) await updateTemplate({
-            ...values,
-          })
-          else await addTemplate({
-            ...values,
-          })
+          if (edit)
+            await updateTemplate({
+              ...values,
+            });
+          else
+            await addTemplate({
+              ...values,
+            });
           setLoading ? setLoading(false) : null;
           return true;
         }}
@@ -71,24 +73,30 @@ export default (props: PropsType) => {
         <MainFormContext.Provider value={{ formRef: formRef.current }}>
           <Row>
             <Col span={24}>
-              <Card title="Template Details">
+              <Card title="Party Details">
                 <ProFormText
                   rules={[{ required: true }]}
                   name={'t_name'}
-                  label="Template Name"
+                  label="Party Name"
                   placeholder="Please enter the name"
                   readonly={edit}
+                  fieldProps={{ 
+                    onChange: (v) => {
+                      // formRef.setFieldsValue({ area: 0, per_rate: 0, taxable_amount: 0 });
+                      // setRentType(v);
+                    },
+                   }}
                 />
               </Card>
             </Col>
-            <Col span={12}>
+            {/* <Col span={12}>
               <Card title="Billing From">
                 <CompanyFormSection prefix="bf" readonly={true} />
               </Card>
-            </Col>
+            </Col> */}
             <Col span={12}>
               <Card title="Billing To">
-                <CompanyFormSection prefix="bt" />
+                <CompanyFormSection prefix="bt" isTemplate={true} />
               </Card>
             </Col>
           </Row>
