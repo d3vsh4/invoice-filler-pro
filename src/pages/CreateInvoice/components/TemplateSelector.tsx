@@ -7,10 +7,15 @@ import { MainFormContext } from '@/pages/common/context/MainFormContext';
 const TemplateSelector: React.FC = () => {
   // const { formTemplates } = useModel('formTemplates');
   const { formRef } = useContext(MainFormContext);
+  const { setFormState } = useModel('form');
   const [options, setOptions] = useState<{ value: string; lable: string; }[]>([]);
   const handleTemplateChange = async (name: string) => {
     const templates = (await tempDB.get(name));
     formRef?.setFieldsValue(templates);
+    setFormState((ps) => ({
+      ...ps,
+      ...templates,
+    }));
   };
   useEffect(() => {
     (async function doInitialize() {
@@ -23,10 +28,8 @@ const TemplateSelector: React.FC = () => {
   })
   return (
     <ProFormSelect
-      //   fieldProps={{ labelInValue: true }}
-      //   rules={[{ required: true }]}
-      label="Form Template"
-      placeholder="Select form template"
+      label="Party Template"
+      placeholder="Select party template"
       fieldProps={{ onChange: handleTemplateChange }}
       options={options}
       allowClear={false}

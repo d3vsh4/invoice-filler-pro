@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import { message } from 'antd';
-export let tempDB = new PouchDB('TemplateDb');
+export let tempDB = new PouchDB('TemplateDb', { revs_limit: 1, auto_compaction: true });
 
 // const getInfo = () => remoteDB.info().then(function (info) {
 //     console.log(info);
@@ -21,7 +21,7 @@ export async function deleteDb() {
 }
 export const addTemplate = async (data: Record<string, any>) => {
   const Template = {
-    _id: data.t_name,
+    _id: data.bt_name,
     ...data,
     // invoice_date: data.invoice_date.toString(),
   };
@@ -35,7 +35,7 @@ export const addTemplate = async (data: Record<string, any>) => {
 };
 export const updateTemplate = async (data: Record<string, any>) => {
   try {
-    var doc = await tempDB.get(data.t_name);
+    var doc = await tempDB.get(data.bt_name);
     var response = await tempDB.put({
       _id: data.t_name,
       _rev: doc._rev,
@@ -44,6 +44,16 @@ export const updateTemplate = async (data: Record<string, any>) => {
     message.success('template updated');
   } catch (err) {
     message.error('Template name changed');
+    console.log(err.message);
+  }
+};
+export const deleteTemplate = async (data: Record<string, any>) => {
+  try {
+    var doc = await tempDB.get(data.bt_name);
+    var response = await tempDB.remove(doc);
+    message.success('template deleted');
+  } catch (err) {
+    message.error('delete unsuccessful');
     console.log(err.message);
   }
 };

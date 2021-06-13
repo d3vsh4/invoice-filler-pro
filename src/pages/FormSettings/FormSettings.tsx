@@ -5,7 +5,7 @@ import { INITIAL_FORM_VALUES } from '@/models/InitialValues';
 import TemplateTable from './components/TemplateTable';
 import TemplateFormModal from './components/TemplateFormModal';
 import { useEffect, useState } from 'react';
-import { showTemplates } from '@/services/db-services/templateDB';
+import { deleteTemplate, showTemplates } from '@/services/db-services/templateDB';
 
 
 type RecordType = {
@@ -22,7 +22,6 @@ export default () => {
 
     (async function doInitials() {
       let templates = (await showTemplates()).rows;
-      console.log(templates);
       let data = templates.map((obj: any) => ({
         key: obj.key,
         name: obj.id,
@@ -35,6 +34,11 @@ export default () => {
     })()
 
   });
+  const onDelete = async (data: FormStateTypes) => {
+    setLoading(true);
+    await deleteTemplate(data);
+    setLoading(false);
+  };
   return (
     <PageHeaderWrapper title="Form Settings">
       <Row>
@@ -44,7 +48,7 @@ export default () => {
           </Card>
         </Col>
         <Col span={24}>
-          <TemplateTable dataSource={dataSource} loading={loading} />
+          <TemplateTable dataSource={dataSource} loading={loading} handleDelete={onDelete} />
         </Col>
       </Row>
     </PageHeaderWrapper>

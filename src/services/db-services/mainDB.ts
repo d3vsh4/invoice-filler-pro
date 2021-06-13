@@ -19,7 +19,7 @@ export const getLastId = async () => {
 export async function deleteDb() {
   try {
     var response = await localDB.destroy();
-    localDB = new PouchDB('localDatabase');
+    localDB = new PouchDB('localDatabase', { revs_limit: 1, auto_compaction: true });
     console.log(response);
   } catch (err) {
     console.log(err);
@@ -33,9 +33,18 @@ export const addInvoice = async (data: FormStateTypes) => {
   };
 
   await localDB.put(invoice);
-  message.success('successfully added to database');
+  message.success('successfully added');
 };
-
+export const deleteInvoice = async (data: Record<string, any>) => {
+  try {
+    var doc = await localDB.get(data.invoice_no);
+    var response = await localDB.remove(doc);
+    message.success('Invoice Deleted');
+  } catch (err) {
+    message.error('delete unsuccessful');
+    console.log(err.message);
+  }
+};
 // async function sync() {
 //   setSync(true);
 //   var opts = { live: true };

@@ -43,10 +43,6 @@ export default (props: any) => {
     await addInvoice({
       ...data.doc,
     });
-    // console.log('in add invoice: ', invoices);
-
-    message.success('invoice added');
-    return { ok: 'ok' };
   };
 
   return (
@@ -72,18 +68,13 @@ export default (props: any) => {
             setFormState(INITIAL_FORM_VALUES);
           }}
           onFinish={async (values: FormStateTypes) => {
-            await putFormInvoiceData({
-              doc: {
+            await addInvoice ({
                 ...formState,
                 ...values,
-              },
-              id: values.invoice_no,
-              key: values.invoice_no,
             });
             setVisible(false);
             setFormState(INITIAL_FORM_VALUES);
             form.resetFields();
-            message.success('Submitted successfully');
           }}
           submitter={{
             searchConfig: {

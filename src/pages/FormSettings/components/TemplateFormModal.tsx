@@ -19,7 +19,7 @@ type PropsType = {
 };
 export default (props: PropsType) => {
   const { initialValues, edit, setLoading } = props;
-  console.log(initialValues);
+  // console.log(initialValues);
 
   const formRef = useRef<FormInstance>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -72,8 +72,8 @@ export default (props: PropsType) => {
       >
         <MainFormContext.Provider value={{ formRef: formRef.current }}>
           <Row>
-            <Col span={24}>
-              <Card title="Party Details">
+            {/* <Col span={24}> */}
+              {/* <Card title="Party Details">
                 <ProFormText
                   rules={[{ required: true }]}
                   name={'t_name'}
@@ -87,15 +87,15 @@ export default (props: PropsType) => {
                     },
                    }}
                 />
-              </Card>
-            </Col>
+              </Card> */}
+            {/* </Col> */}
             {/* <Col span={12}>
               <Card title="Billing From">
                 <CompanyFormSection prefix="bf" readonly={true} />
               </Card>
             </Col> */}
             <Col span={12}>
-              <Card title="Billing To">
+              <Card title="Party Details">
                 <CompanyFormSection prefix="bt" isTemplate={true} />
               </Card>
             </Col>
